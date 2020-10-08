@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Qi Zou">
   <meta name="keywords" content="">
-  <title>Fastdfs V6.X 部署 - YeFan</title>
+  <title>一分钟教你用python爬下一个壁纸网站 - YeFan</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -172,8 +172,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-08-22 15:11" pubdate>
-      2020年8月22日 下午
+    <time datetime="2020-10-08 17:19" pubdate>
+      2020年10月8日 下午
     </time>
   </div>
 
@@ -183,7 +183,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      0 字
     </span>
   
 
@@ -193,7 +193,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      18
+      1
        分钟
     </span>
   
@@ -223,167 +223,15 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">Fastdfs V6.X 部署</h1>
+            <h1 style="display: none">一分钟教你用python爬下一个壁纸网站</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="Fastdfs-V6-X-部署"><a href="#Fastdfs-V6-X-部署" class="headerlink" title="Fastdfs V6.X 部署"></a>Fastdfs V6.X 部署</h1><p>此前一直使用的是Fastdfs V5.11 基本满足相关的业务需求，但近期有客户提到双IP的需求，使用5.11的版本将无法解决该问题，刚好V6.0版本的新特性能满足这一需求，现对Fastdfs V6.0 进行部署和测试。</p>
-<h2 id="Fastdfs-V6-X-新特性说明"><a href="#Fastdfs-V6-X-新特性说明" class="headerlink" title="Fastdfs V6.X 新特性说明"></a>Fastdfs V6.X 新特性说明</h2><p>（摘抄自 <a target="_blank" rel="noopener" href="https://blog.csdn.net/lhhzbmh/article/details/105892027">https://blog.csdn.net/lhhzbmh/article/details/105892027</a>）</p>
-<p>支持双IP，一个内网IP，一个外网IP，支持NAT方式的内网和外网双IP，解决跨机房或混合云部署问题。</p>
-<p>双IP特性和规则：</p>
-<p>tracker 和 storage 均可支持双 IP，一个<strong>内网 IP</strong>，一个<strong>外网 IP</strong>。</p>
-<p>FastDFS 支持双 IP 特性后，将完全兼容以前单 IP 的设计和逻辑。对于storage server要使用双 IP 特性，必须使用 FastDFS V4.0 引入的 <strong>storage server id</strong> 特性，也就是把双IP配置到 <strong>storage_ids.conf</strong> 中。</p>
-<p>连接规则：</p>
-<p><strong>storage 连接storage server，优先尝试连接内网 IP，失败了再尝试连接外网 IP。</strong></p>
-<p>client 向 tracker server 获取 storage server IP，tracker server采用规则如下:</p>
-<p>- 外网过来的请求，返回外网 IP；</p>
-<p>- 内网过来的请求，返回内网 IP。</p>
-<p>内网 IP 地址段为：10. 打头，192.168. 打头以及 172.[16-32). 打头的IP地址。注：[16-32)为范围表示方式，表示大于等于16且小于32的整数。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="安装包准备"><a href="#安装包准备" class="headerlink" title="安装包准备"></a>安装包准备</h3><p>环境以及安装包准备：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>centos</td>
-<td>7.x</td>
-</tr>
-<tr>
-<td>libfastcommon</td>
-<td>FastDFS分离出的一些公用函数包 ，下载路径<a target="_blank" rel="noopener" href="https://github.com/happyfish100/libfastcommon/releases">https://github.com/happyfish100/libfastcommon/releases</a></td>
-</tr>
-<tr>
-<td>FastDFS</td>
-<td>FastDFS本体，选择6.x的版本 <br>  <a target="_blank" rel="noopener" href="https://github.com/happyfish100/fastdfs/releases">https://github.com/happyfish100/fastdfs/releases</a></td>
-</tr>
-<tr>
-<td>fastdfs-nginx-module</td>
-<td>FastDFS和nginx的关联模块 ，<a target="_blank" rel="noopener" href="https://github.com/happyfish100/fastdfs-nginx-module/releases">https://github.com/happyfish100/fastdfs-nginx-module/releases</a></td>
-</tr>
-<tr>
-<td>nginx</td>
-<td>nginx1.15.4 ，下载地址<a target="_blank" rel="noopener" href="http://nginx.org/download/nginx-1.15.4.tar.gz">http://nginx.org/download/nginx-1.15.4.tar.gz</a></td>
-</tr>
-</tbody></table>
-<p>编译环境准备：</p>
-<pre><code class="hljs angelscript">yum install git gcc gcc-c++ make <span class="hljs-built_in">auto</span>make <span class="hljs-built_in">auto</span>conf libtool pcre pcre-devel zlib zlib-devel openssl-devel wget vim -y</code></pre>
-
-<h3 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h3><p>安装过程这里不过多的赘述，可以参考github上的安装教程<a target="_blank" rel="noopener" href="https://github.com/happyfish100/fastdfs/wiki">https://github.com/happyfish100/fastdfs/wiki</a>，这里着重说下配置；</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>由于本次升级没有卸载原来在该服务器上安装的fastdfs 5.11，安装时直接编译了6.0.6的安装包，所以原本的配置文件也都还在上面，需要将解压后的fastdfs源码包<code>conf</code>目录下的配置文件移动到<code>/etc/fdfs/</code>目录下；</p>
-<p><img src="/2020/08/22/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/image-20200822144506069.png" srcset="/img/loading.gif" alt="img_t"></p>
-<h3 id="tracker配置文件修改-tracker-conf"><a href="#tracker配置文件修改-tracker-conf" class="headerlink" title="tracker配置文件修改 (tracker.conf)"></a>tracker配置文件修改 (tracker.conf)</h3><pre><code class="hljs ini"><span class="hljs-comment"># the tracker server port</span>
-<span class="hljs-attr">port</span> = <span class="hljs-number">22122</span>
-
-<span class="hljs-comment"># the base path to store data and log files</span>
-<span class="hljs-attr">base_path</span> = /home/yuqing/fastdfs
-
-<span class="hljs-comment"># if use storage server ID instead of IP address</span>
-<span class="hljs-comment"># if you want to use dual IPs for storage server, you MUST set</span>
-<span class="hljs-comment"># this parameter to true, and configure the dual IPs in the file</span>
-<span class="hljs-comment"># configured by following item &quot;storage_ids_filename&quot;, such as storage_ids.conf</span>
-<span class="hljs-comment"># default value is false</span>
-<span class="hljs-comment"># since V4.00</span>
-<span class="hljs-attr">use_storage_id</span> = <span class="hljs-literal">true</span>
-
-<span class="hljs-comment"># specify storage ids filename, can use relative or absolute path</span>
-<span class="hljs-comment"># this parameter is valid only when use_storage_id set to true</span>
-<span class="hljs-comment"># since V4.00</span>
-<span class="hljs-attr">storage_ids_filename</span> = storage_ids.conf
-
-<span class="hljs-comment"># id type of the storage server in the filename, values are:</span>
-<span class="hljs-comment">## ip: the ip address of the storage server</span>
-<span class="hljs-comment">## id: the server id of the storage server</span>
-<span class="hljs-comment"># this paramter is valid only when use_storage_id set to true</span>
-<span class="hljs-comment"># default value is ip</span>
-<span class="hljs-comment"># since V4.03</span>
-<span class="hljs-attr">id_type_in_filename</span> = id
-
-</code></pre>
-
-
-
-<h3 id="storage配置文件修改-storage-conf"><a href="#storage配置文件修改-storage-conf" class="headerlink" title="storage配置文件修改 (storage.conf)"></a>storage配置文件修改 (storage.conf)</h3><pre><code class="hljs ini"><span class="hljs-comment"># the name of the group this storage server belongs to</span>
-<span class="hljs-comment">#</span>
-<span class="hljs-comment"># comment or remove this item for fetching from tracker server,</span>
-<span class="hljs-comment"># in this case, use_storage_id must set to true in tracker.conf,</span>
-<span class="hljs-comment"># and storage_ids.conf must be configured correctly.</span>
-<span class="hljs-attr">group_name</span> = group1
-
-<span class="hljs-comment"># the storage server port</span>
-<span class="hljs-attr">port</span> = <span class="hljs-number">23000</span>
-
-<span class="hljs-comment"># the base path to store data and log files</span>
-<span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> the binlog files maybe are large, make sure</span>
-<span class="hljs-comment">#       the base path has enough disk space,</span>
-<span class="hljs-comment">#       eg. the disk free space should &gt; 50GB</span>
-<span class="hljs-attr">base_path</span> = /home/yuqing/fastdfs
-
-<span class="hljs-comment"># store path (disk or mount point) count, default value is 1</span>
-<span class="hljs-attr">store_path_count</span> = <span class="hljs-number">1</span>
-
-<span class="hljs-comment"># store_path#, based on 0, to configure the store paths to store files</span>
-<span class="hljs-comment"># if store_path0 not exists, it&#x27;s value is base_path (NOT recommended)</span>
-<span class="hljs-comment"># the paths must be exist.</span>
-<span class="hljs-comment">#</span>
-<span class="hljs-comment"># IMPORTANT <span class="hljs-doctag">NOTE:</span></span>
-<span class="hljs-comment">#       the store paths&#x27; order is very important, don&#x27;t mess up!!!</span>
-<span class="hljs-comment">#       the base_path should be independent (different) of the store paths</span>
-
-<span class="hljs-attr">store_path0</span> = /home/yuqing/fastdfs
-<span class="hljs-comment">#store_path1 = /home/yuqing/fastdfs2</span>
-
-<span class="hljs-comment"># tracker_server can ocur more than once for multi tracker servers.</span>
-<span class="hljs-comment"># the value format of tracker_server is &quot;HOST:PORT&quot;,</span>
-<span class="hljs-comment">#   the HOST can be hostname or ip address,</span>
-<span class="hljs-comment">#   and the HOST can be dual IPs or hostnames seperated by comma,</span>
-<span class="hljs-comment">#   the dual IPS must be an inner (intranet) IP and an outer (extranet) IP,</span>
-<span class="hljs-comment">#   or two different types of inner (intranet) IPs.</span>
-<span class="hljs-comment">#   for example: 192.168.2.100,122.244.141.46:22122</span>
-<span class="hljs-comment">#   another eg.: 192.168.1.10,172.17.4.21:22122</span>
-
-<span class="hljs-attr">tracker_server</span> = <span class="hljs-number">192.168</span>.<span class="hljs-number">209.121</span>:<span class="hljs-number">22122</span>
-<span class="hljs-attr">tracker_server</span> = <span class="hljs-number">192.168</span>.<span class="hljs-number">209.122</span>:<span class="hljs-number">22122</span>
-</code></pre>
-
-
-
-<h3 id="storage-ids配置文件修改-storage-ids-conf"><a href="#storage-ids配置文件修改-storage-ids-conf" class="headerlink" title="storage_ids配置文件修改 (storage_ids.conf)"></a>storage_ids配置文件修改 (storage_ids.conf)</h3><pre><code class="hljs yaml"><span class="hljs-comment"># &lt;id&gt;  &lt;group_name&gt;  &lt;ip_or_hostname[:port]&gt;</span>
-<span class="hljs-comment">#</span>
-<span class="hljs-comment"># id is a natural number (1, 2, 3 etc.),</span>
-<span class="hljs-comment"># 6 bits of the id length is enough, such as 100001</span>
-<span class="hljs-comment">#</span>
-<span class="hljs-comment"># storage ip or hostname can be dual IPs seperated by comma,</span>
-<span class="hljs-comment"># one is an inner (intranet) IP and another is an outer (extranet) IP,</span>
-<span class="hljs-comment"># or two different types of inner (intranet) IPs</span>
-<span class="hljs-comment"># for example: 192.168.2.100,122.244.141.46</span>
-<span class="hljs-comment"># another eg.: 192.168.1.10,172.17.4.21</span>
-<span class="hljs-comment">#</span>
-<span class="hljs-comment"># the port is optional. if you run more than one storaged instances</span>
-<span class="hljs-comment"># in a server, you must specified the port to distinguish different instances.</span>
-
-<span class="hljs-number">100001</span>   <span class="hljs-string">group1</span>  <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.196</span>
-<span class="hljs-number">100002</span>   <span class="hljs-string">group1</span>  <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.197</span>
-</code></pre>
-
-
-
-
-
-
+              
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/Fastdfs/">Fastdfs</a>
-                    
-                  </div>
                 
               </div>
               
@@ -394,9 +242,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/08/%E4%B8%80%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E7%94%A8python%E7%88%AC%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/">
+                      <a href="/2020/10/08/%E4%B8%80%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E7%94%A8python%E7%88%AC%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/python%20%E6%89%B9%E9%87%8F%E7%88%AC%E6%9F%90%E7%BD%91%E7%AB%99%E7%9A%84%E5%9B%BE%E7%89%87/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">一分钟教你用python爬下一个壁纸网站</span>
+                        <span class="hidden-mobile"></span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -404,8 +252,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/08/22/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E5%92%8C%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/%E6%9C%AC%E5%9C%B0%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E5%92%8C%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/">
-                        <span class="hidden-mobile">本地开发使用nacos作为注册中心和配置中心</span>
+                      <a href="/2020/08/22/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/">
+                        <span class="hidden-mobile">Fastdfs V6.X 部署</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -424,8 +272,8 @@
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://yoursite.com/2020/08/22/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/';
-        this.page.identifier = '/2020/08/22/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/';
+        this.page.url = 'http://yoursite.com/2020/10/08/%E4%B8%80%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E7%94%A8python%E7%88%AC%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/';
+        this.page.identifier = '/2020/10/08/%E4%B8%80%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E7%94%A8python%E7%88%AC%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/';
       };
       function loadDisqus() {
         (function () {
@@ -623,7 +471,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Fastdfs V6.X 部署&nbsp;",
+        "一分钟教你用python爬下一个壁纸网站&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

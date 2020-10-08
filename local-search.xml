@@ -4,6 +4,32 @@
   
   
   <entry>
+    <title></title>
+    <link href="/2020/10/08/%E4%B8%80%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E7%94%A8python%E7%88%AC%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/python%20%E6%89%B9%E9%87%8F%E7%88%AC%E6%9F%90%E7%BD%91%E7%AB%99%E7%9A%84%E5%9B%BE%E7%89%87/"/>
+    <url>/2020/10/08/%E4%B8%80%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E7%94%A8python%E7%88%AC%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/python%20%E6%89%B9%E9%87%8F%E7%88%AC%E6%9F%90%E7%BD%91%E7%AB%99%E7%9A%84%E5%9B%BE%E7%89%87/</url>
+    
+    <content type="html"><![CDATA[<h1 id="python-批量爬某网站的图片"><a href="#python-批量爬某网站的图片" class="headerlink" title="python 批量爬某网站的图片"></a>python 批量爬某网站的图片</h1><p>[toc]</p><h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul><li>目标网址：<a href="http://pic.netbian.com/">http://pic.netbian.com/</a></li><li>主题：4K动漫</li></ul><h2 id="爬取流程"><a href="#爬取流程" class="headerlink" title="爬取流程"></a>爬取流程</h2><ul><li><p>选择某一个主题</p><p><img src="/home/yefan/.config/Typora/typora-user-images/image-20201005155623813.png" alt="image-20201005155623813"></p></li><li><p>查看正常图片的地址</p><p><img src="/home/yefan/.config/Typora/typora-user-images/image-20201005155829456.png" alt="image-20201005155829456"></p></li><li><p>进入正常图片页面，找到图片的真实路径</p><p><img src="/home/yefan/.config/Typora/typora-user-images/image-20201005155930203.png" alt="image-20201005155930203"></p></li><li><p>下载图片</p></li><li><p>重复以上操作下载其他的图片</p></li></ul><p>以上是下载一个页面的图片，那么分页图片如何下载，则需要在最外层循环跳转到不同的分页页面即可。</p><h2 id="开始爬虫"><a href="#开始爬虫" class="headerlink" title="开始爬虫"></a>开始爬虫</h2><p>源码：</p><pre><code class="hljs Python"><span class="hljs-keyword">import</span> urllib.request<span class="hljs-keyword">import</span> re<span class="hljs-keyword">import</span> os<span class="hljs-keyword">import</span> urllib<span class="hljs-keyword">import</span> requests<span class="hljs-comment"># 匹配分页</span><span class="hljs-comment"># 匹配小图片路径</span><span class="hljs-comment"># 匹配正常图片路径</span><span class="hljs-comment"># 下载图片</span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>    main_index_html = <span class="hljs-string">&#x27;http://pic.netbian.com/4kdongman/&#x27;</span>    index_html = main_index_html    <span class="hljs-keyword">for</span> index <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,<span class="hljs-number">115</span>):        <span class="hljs-keyword">if</span>(index != <span class="hljs-number">1</span>):            index_html = main_index_html + <span class="hljs-string">&quot;index_&quot;</span>+str(index)+<span class="hljs-string">&quot;.html&quot;</span>        print(index_html)        page(index_html)<span class="hljs-comment"># 根据页码下载</span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">page</span>(<span class="hljs-params">index_html</span>):</span>    main_addr = <span class="hljs-string">&#x27;http://pic.netbian.com/&#x27;</span>    html_data = get_html(index_html)    pat = <span class="hljs-string">&#x27;/tupian/(.*?).html&#x27;</span>    xiao_tu_pian = get_addr(pat , html_data)    <span class="hljs-keyword">for</span> xtp <span class="hljs-keyword">in</span> xiao_tu_pian:        xtp_addr = main_addr + <span class="hljs-string">&#x27;/tupian/&#x27;</span>+xtp+<span class="hljs-string">&#x27;.html&#x27;</span>        print(xtp_addr)        da_tu_pian = get_addr(<span class="hljs-string">&#x27;/uploads/allimg/(.*?).jpg&#x27;</span>,get_html(xtp_addr))        dtp_addr = main_addr + <span class="hljs-string">&#x27;/uploads/allimg/&#x27;</span>+da_tu_pian[<span class="hljs-number">0</span>]+<span class="hljs-string">&#x27;.jpg&#x27;</span>        print(dtp_addr)        save_addr = <span class="hljs-string">&#x27;/home/yefan/Work/pythonWorkSpace/Spider/img/&#x27;</span>+da_tu_pian[<span class="hljs-number">0</span>].split(<span class="hljs-string">&quot;/&quot;</span>)[<span class="hljs-number">1</span>]+<span class="hljs-string">&#x27;.jpg&#x27;</span>        print(save_addr)        download_img(dtp_addr , save_addr)<span class="hljs-comment"># 根据匹配规则查找所有的路径</span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_addr</span>(<span class="hljs-params">pat , html_data</span>):</span>    result = re.compile(pat).findall(html_data)    <span class="hljs-keyword">return</span> result<span class="hljs-comment"># 获取网站内容</span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_html</span>(<span class="hljs-params">url</span>):</span>    page = urllib.request.urlopen(url)    html_a = page.read()    <span class="hljs-keyword">return</span> html_a.decode(<span class="hljs-string">&#x27;cp936&#x27;</span>)<span class="hljs-comment"># 下载图片</span><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">download_img</span>(<span class="hljs-params">img_url , save_addr</span>):</span>    urllib.request.urlretrieve(img_url, save_addr) <span class="hljs-comment">#下载图片</span><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:    main()</code></pre><h2 id="爬虫结果"><a href="#爬虫结果" class="headerlink" title="爬虫结果"></a>爬虫结果</h2><p><img src="/home/yefan/.config/Typora/typora-user-images/image-20201005215539469.png" alt="image-20201005215539469"></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>一分钟教你用python爬下一个壁纸网站</title>
+    <link href="/2020/10/08/%E4%B8%80%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E7%94%A8python%E7%88%AC%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/"/>
+    <url>/2020/10/08/%E4%B8%80%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E7%94%A8python%E7%88%AC%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Fastdfs V6.X 部署</title>
     <link href="/2020/08/22/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/"/>
     <url>/2020/08/22/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/Fastdfs-V6-X-%E9%83%A8%E7%BD%B2/</url>
