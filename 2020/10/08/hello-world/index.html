@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Qi Zou">
   <meta name="keywords" content="">
-  <title>一分钟教你用python爬下一个壁纸网站 - YeFan</title>
+  <title>Hello World - YeFan</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -172,7 +172,7 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-10-08 17:19" pubdate>
+    <time datetime="2020-10-08 17:09" pubdate>
       2020年10月8日 下午
     </time>
   </div>
@@ -183,7 +183,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      361 字
+      75 字
     </span>
   
 
@@ -193,7 +193,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      1
        分钟
     </span>
   
@@ -223,87 +223,22 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">一分钟教你用python爬下一个壁纸网站</h1>
+            <h1 style="display: none">Hello World</h1>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="python-批量爬某网站的图片"><a href="#python-批量爬某网站的图片" class="headerlink" title="python 批量爬某网站的图片"></a>python 批量爬某网站的图片</h1><p>[toc]</p>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
-<li>目标网址：<a target="_blank" rel="noopener" href="http://pic.netbian.com/">http://pic.netbian.com/</a></li>
-<li>主题：4K动漫</li>
-</ul>
-<h2 id="爬取流程"><a href="#爬取流程" class="headerlink" title="爬取流程"></a>爬取流程</h2><ul>
-<li><p>选择某一个主题</p>
-<p><img src="/home/yefan/.config/Typora/typora-user-images/image-20201005155623813.png" srcset="/img/loading.gif" alt="image-20201005155623813"></p>
-</li>
-<li><p>查看正常图片的地址</p>
-<p><img src="/home/yefan/.config/Typora/typora-user-images/image-20201005155829456.png" srcset="/img/loading.gif" alt="image-20201005155829456"></p>
-</li>
-<li><p>进入正常图片页面，找到图片的真实路径</p>
-<p><img src="/home/yefan/.config/Typora/typora-user-images/image-20201005155930203.png" srcset="/img/loading.gif" alt="image-20201005155930203"></p>
-</li>
-<li><p>下载图片</p>
-</li>
-<li><p>重复以上操作下载其他的图片</p>
-</li>
-</ul>
-<p>以上是下载一个页面的图片，那么分页图片如何下载，则需要在最外层循环跳转到不同的分页页面即可。</p>
-<h2 id="开始爬虫"><a href="#开始爬虫" class="headerlink" title="开始爬虫"></a>开始爬虫</h2><p>源码：</p>
-<pre><code class="hljs Python"><span class="hljs-keyword">import</span> urllib.request
-<span class="hljs-keyword">import</span> re
-<span class="hljs-keyword">import</span> os
-<span class="hljs-keyword">import</span> urllib
-<span class="hljs-keyword">import</span> requests
+              <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span></code></pre>
 
-<span class="hljs-comment"># 匹配分页</span>
-<span class="hljs-comment"># 匹配小图片路径</span>
-<span class="hljs-comment"># 匹配正常图片路径</span>
-<span class="hljs-comment"># 下载图片</span>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre><code class="hljs bash">$ hexo server</code></pre>
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>
-    main_index_html = <span class="hljs-string">&#x27;http://pic.netbian.com/4kdongman/&#x27;</span>
-    index_html = main_index_html
-    <span class="hljs-keyword">for</span> index <span class="hljs-keyword">in</span> range(<span class="hljs-number">1</span>,<span class="hljs-number">115</span>):
-        <span class="hljs-keyword">if</span>(index != <span class="hljs-number">1</span>):
-            index_html = main_index_html + <span class="hljs-string">&quot;index_&quot;</span>+str(index)+<span class="hljs-string">&quot;.html&quot;</span>
-        print(index_html)
-        page(index_html)
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre><code class="hljs bash">$ hexo generate</code></pre>
 
-<span class="hljs-comment"># 根据页码下载</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">page</span>(<span class="hljs-params">index_html</span>):</span>
-    main_addr = <span class="hljs-string">&#x27;http://pic.netbian.com/&#x27;</span>
-    html_data = get_html(index_html)
-    pat = <span class="hljs-string">&#x27;/tupian/(.*?).html&#x27;</span>
-    xiao_tu_pian = get_addr(pat , html_data)
-    <span class="hljs-keyword">for</span> xtp <span class="hljs-keyword">in</span> xiao_tu_pian:
-        xtp_addr = main_addr + <span class="hljs-string">&#x27;/tupian/&#x27;</span>+xtp+<span class="hljs-string">&#x27;.html&#x27;</span>
-        print(xtp_addr)
-        da_tu_pian = get_addr(<span class="hljs-string">&#x27;/uploads/allimg/(.*?).jpg&#x27;</span>,get_html(xtp_addr))
-        dtp_addr = main_addr + <span class="hljs-string">&#x27;/uploads/allimg/&#x27;</span>+da_tu_pian[<span class="hljs-number">0</span>]+<span class="hljs-string">&#x27;.jpg&#x27;</span>
-        print(dtp_addr)
-        save_addr = <span class="hljs-string">&#x27;/home/yefan/Work/pythonWorkSpace/Spider/img/&#x27;</span>+da_tu_pian[<span class="hljs-number">0</span>].split(<span class="hljs-string">&quot;/&quot;</span>)[<span class="hljs-number">1</span>]+<span class="hljs-string">&#x27;.jpg&#x27;</span>
-        print(save_addr)
-        download_img(dtp_addr , save_addr)
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre><code class="hljs bash">$ hexo deploy</code></pre>
 
-<span class="hljs-comment"># 根据匹配规则查找所有的路径</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_addr</span>(<span class="hljs-params">pat , html_data</span>):</span>
-    result = re.compile(pat).findall(html_data)
-    <span class="hljs-keyword">return</span> result
-
-<span class="hljs-comment"># 获取网站内容</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_html</span>(<span class="hljs-params">url</span>):</span>
-    page = urllib.request.urlopen(url)
-    html_a = page.read()
-    <span class="hljs-keyword">return</span> html_a.decode(<span class="hljs-string">&#x27;cp936&#x27;</span>)
-
-<span class="hljs-comment"># 下载图片</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">download_img</span>(<span class="hljs-params">img_url , save_addr</span>):</span>
-    urllib.request.urlretrieve(img_url, save_addr) <span class="hljs-comment">#下载图片</span>
-
-
-<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
-    main()</code></pre>
-
-<h2 id="爬虫结果"><a href="#爬虫结果" class="headerlink" title="爬虫结果"></a>爬虫结果</h2><p><img src="/home/yefan/.config/Typora/typora-user-images/image-20201005215539469.png" srcset="/img/loading.gif" alt="image-20201005215539469"></p>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 
             </div>
             <hr>
@@ -319,6 +254,12 @@
                 <div class="post-prevnext row">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2020/10/08/%E4%B8%80%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E7%94%A8python%E7%88%AC%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一分钟教你用python爬下一个壁纸网站</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
@@ -344,8 +285,8 @@
     <div id="disqus_thread"></div>
     <script type="text/javascript">
       var disqus_config = function () {
-        this.page.url = 'http://yoursite.com/2020/10/08/%E4%B8%80%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E7%94%A8python%E7%88%AC%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/python%20%E6%89%B9%E9%87%8F%E7%88%AC%E6%9F%90%E7%BD%91%E7%AB%99%E7%9A%84%E5%9B%BE%E7%89%87/';
-        this.page.identifier = '/2020/10/08/%E4%B8%80%E5%88%86%E9%92%9F%E6%95%99%E4%BD%A0%E7%94%A8python%E7%88%AC%E4%B8%8B%E4%B8%80%E4%B8%AA%E5%A3%81%E7%BA%B8%E7%BD%91%E7%AB%99/python%20%E6%89%B9%E9%87%8F%E7%88%AC%E6%9F%90%E7%BD%91%E7%AB%99%E7%9A%84%E5%9B%BE%E7%89%87/';
+        this.page.url = 'http://yoursite.com/2020/10/08/hello-world/';
+        this.page.identifier = '/2020/10/08/hello-world/';
       };
       function loadDisqus() {
         (function () {
@@ -543,7 +484,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "一分钟教你用python爬下一个壁纸网站&nbsp;",
+        "Hello World&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
