@@ -64,6 +64,59 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-img-test" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/01/06/img-test/" class="article-date">
+  <time datetime="2022-01-06T02:43:23.000Z" itemprop="datePublished">2022-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/01/06/img-test/">img-test</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>用于测试图片是否可以正常展示</p>
+<img src="/2022/01/06/img-test/image-20220106104706904.png" class="" title="This is an image">
+
+<p>操作步骤：</p>
+<ol>
+<li>在_config.yml 中修改如下配置为 true<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure></li>
+<li>文章中使用图片</li>
+</ol>
+<ul>
+<li>第一种可以使用，makedown的格式  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![image-20220106105728993](image-20220106105728993.png)</span><br></pre></td></tr></table></figure></li>
+<li>第二种 使用如下方式  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% asset_img image-20220106104706904.png This is an image %&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>注意：其中的 image-20220106104706904.png 为需要展示的图片名称，该图片会放在与当前博客同名的目录下面</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/01/06/img-test/" data-id="cky2d7lqe0000ntsufx9ad9ex" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/test/" rel="tag">test</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-my-first-blog" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2022/01/06/my-first-blog/" class="article-date">
@@ -201,6 +254,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/01/06/img-test/">img-test</a>
+          </li>
         
           <li>
             <a href="/2022/01/06/my-first-blog/">新的第一篇博客</a>
