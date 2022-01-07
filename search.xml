@@ -4,6 +4,50 @@
   
     
     <entry>
+      <title>【BUG记录】Java连接mysql数据库报错：Communications link failure</title>
+      <link href="/2022/01/07/Java%E8%BF%9E%E6%8E%A5mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%A5%E9%94%99%EF%BC%9ACommunications-link-failure/"/>
+      <url>/2022/01/07/Java%E8%BF%9E%E6%8E%A5mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%A5%E9%94%99%EF%BC%9ACommunications-link-failure/</url>
+      
+        <content type="html"><![CDATA[<h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p>java项目（springboot）连接mysql出现如下错误：</p><p><img src="image-20220107152352681.png" alt="image-20220107152352681"></p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure</span><br></pre></td></tr></table></figure><p>项目中配置的jdbc连接地址如下：</p><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">druid.url</span>=<span class="string">jdbc:log4jdbc:mysql://172.18.xxx.xxx:3306/xxxxdb?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><p>但是通过navicat等工具可以正常的连接</p><p><img src="image-20220107152618747.png" alt="image-20220107152618747"></p><h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>查了很多资料，发现在MySQL5.7之前的版本，安全性较低，存在任何用户都可以连接上的 test 库，所以官方在5.7版本加大了对隐私的保护。并且采用了默认 useSSL = true值防止对数据库的随意修改，到了8.0版本，仍然保留了SSL，并且默认值为 true，所以只要将 “?useSSL= false” 放在url表名后即可</p><h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><p>在配置的jdbc连接地址末尾带上如下参数即可：</p><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&amp;useSSL</span>=<span class="string">false</span></span><br></pre></td></tr></table></figure><p>例如：</p><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">druid.url</span>=<span class="string">jdbc:log4jdbc:mysql://172.18.xxx.xxx:3306/xxxxdb?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC&amp;useSSL=false</span></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> mysql </tag>
+            
+            <tag> jdbc </tag>
+            
+            <tag> BUG </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>各系统下无限重置IDEA试用版本</title>
+      <link href="/2022/01/07/%E5%90%84%E7%B3%BB%E7%BB%9F%E4%B8%8B%E6%97%A0%E9%99%90%E9%87%8D%E7%BD%AEIDEA%E8%AF%95%E7%94%A8%E7%89%88%E6%9C%AC/"/>
+      <url>/2022/01/07/%E5%90%84%E7%B3%BB%E7%BB%9F%E4%B8%8B%E6%97%A0%E9%99%90%E9%87%8D%E7%BD%AEIDEA%E8%AF%95%E7%94%A8%E7%89%88%E6%9C%AC/</url>
+      
+        <content type="html"><![CDATA[<h1 id="在Ubuntu（linux）下重置"><a href="#在Ubuntu（linux）下重置" class="headerlink" title="在Ubuntu（linux）下重置"></a>在Ubuntu（linux）下重置</h1><p>先说一下原理，在2021.2.3版本之前，我们本机使用IDEA是不需要登录什么账户的，因此IDEA无法讲试用时间的限制放在云端，也就是说，IDEA的试用时间的限制数据是放在我们本地的，只需要找到IDEA存放在我们<strong>本地的时间限制数据</strong>，并删掉就可以重置试用时间；下面就开始吧。</p><ol><li><p>第一步，我们需要找到IDEA 的数据存放在哪儿</p><p>经过一番寻找，终于到找了，数据目录在我们用户目录下的 .config/JetBrains/ 目录下：</p><p><img src="image-20220107120704640.png" alt="image-20220107120704640"></p></li><li><p><del>由于没办法区分那些文件是用来存放时间限制的，我们可以一把全部删掉，相当于重新安装</del></p><p><img src="image-20220107120725543.png" alt="image-20220107120725543"></p></li><li><p>最新发现，只需要删除 <code>/home/yefan/.config/JetBrains/IntelliJIdea2021.2/eval</code> 目录下的文件即可</p><p><img src="image-20220107120746900.png" alt="image-20220107120746900"></p></li><li><p>删除后再重启IDEA，就可以发现IDEA跟新安装一样</p></li></ol><p>evaluation.key</p><ol start="5"><li>到这里就完成了重置</li></ol><p>这种方式同样适用于所有 <code>JetBrains</code> 的其他产品，但是要求版本是在  2021.2 版本以前</p><h1 id="在windows下重置"><a href="#在windows下重置" class="headerlink" title="在windows下重置"></a>在windows下重置</h1><p>路径如下：</p><p>C:\Users\zq\AppData\Roaming\JetBrains\IntelliJIdea2021.1\eval</p><p><img src="image-20220107120806097.png" alt="image-20220107120806097"></p><p>把.key的文件 重命名为其他的名字就可以重新选择试用</p><p>如果无法找到路径，可以在 C盘根目录下进行使用搜索，关键词为：evaluation.key</p><h1 id="在Mac-下重置"><a href="#在Mac-下重置" class="headerlink" title="在Mac 下重置"></a>在Mac 下重置</h1><p>脚本如下：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># reset jetbrains ide evals for now</span></span><br><span class="line"></span><br><span class="line">OS_NAME=$(uname -s)</span><br><span class="line">JB_PRODUCTS=<span class="string">&quot;IntelliJIdea CLion PhpStorm GoLand PyCharm WebStorm Rider DataGrip RubyMine AppCode&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$OS_NAME</span>&quot;</span> = <span class="string">&quot;Darwin&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;macOS:&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> PRD <span class="keyword">in</span> <span class="variable">$JB_PRODUCTS</span>; <span class="keyword">do</span></span><br><span class="line">    rm -rf ~/Library/Preferences/<span class="variable">$&#123;PRD&#125;</span>*/<span class="built_in">eval</span></span><br><span class="line">    rm -rf ~/Library/Application\\ Support/<span class="variable">$&#123;PRD&#125;</span>*/<span class="built_in">eval</span></span><br><span class="line">    rm -rf ~/Library/Application\\ Support/JetBrains/<span class="variable">$&#123;PRD&#125;</span>*/<span class="built_in">eval</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="keyword">elif</span> [ <span class="string">&quot;<span class="variable">$OS_NAME</span>&quot;</span> = <span class="string">&quot;Linux&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Linux:&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> PRD <span class="keyword">in</span> <span class="variable">$JB_PRODUCTS</span>; <span class="keyword">do</span></span><br><span class="line">  rm -rf ~/.<span class="variable">$&#123;PRD&#125;</span>*/config/<span class="built_in">eval</span></span><br><span class="line">    rm -rf ~/.config/<span class="variable">$&#123;PRD&#125;</span>*/<span class="built_in">eval</span></span><br><span class="line">    rm -rf ~/.config/JetBrains/<span class="variable">$&#123;PRD&#125;</span>*/<span class="built_in">eval</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;unsupported&#x27;</span></span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;done.&#x27;</span></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> IDEA </tag>
+            
+            <tag> 软件破解 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>bind-exporter的部署</title>
       <link href="/2022/01/07/bind-exporter%E7%9A%84%E9%83%A8%E7%BD%B2/"/>
       <url>/2022/01/07/bind-exporter%E7%9A%84%E9%83%A8%E7%BD%B2/</url>
@@ -141,6 +185,25 @@
             <tag> 云计算 </tag>
             
             <tag> 云监控 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Nginx访问限制配置</title>
+      <link href="/2021/12/15/Nginx%E8%AE%BF%E9%97%AE%E9%99%90%E5%88%B6%E9%85%8D%E7%BD%AE/"/>
+      <url>/2021/12/15/Nginx%E8%AE%BF%E9%97%AE%E9%99%90%E5%88%B6%E9%85%8D%E7%BD%AE/</url>
+      
+        <content type="html"><![CDATA[<h1 id="限制下载速度"><a href="#限制下载速度" class="headerlink" title="限制下载速度"></a>限制下载速度</h1><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location xxx &#123;</span><br><span class="line">            limit_rate 100k;</span><br><span class="line">...</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure><p><img src="image-20220107120229415.png" alt="image-20220107120229415"></p><p>重启nginx后，可以发现下载速度，确实被限制在 100k/s 左右</p><p><img src="image-20220107120250231.png" alt="image-20220107120250231"></p><h1 id="限制并发数"><a href="#限制并发数" class="headerlink" title="限制并发数"></a>限制并发数</h1><p>添加如下两行参数</p><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">http&#123;</span><br><span class="line">limit_conn_zone $binary_remote_addr zone=one:10m;</span><br><span class="line">...</span><br><span class="line">service&#123;</span><br><span class="line">...</span><br><span class="line">location xxx&#123;</span><br><span class="line">limit_conn one <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><img src="image-20220107120309413.png" alt="image-20220107120309413"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> nginx </tag>
             
         </tags>
       
