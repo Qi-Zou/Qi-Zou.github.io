@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title>picgo配合SMMS构建自己免费的图床</title>
+      <link href="/2022/01/07/picgo%E9%85%8D%E5%90%88SMMS%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E5%85%8D%E8%B4%B9%E7%9A%84%E5%9B%BE%E5%BA%8A/"/>
+      <url>/2022/01/07/picgo%E9%85%8D%E5%90%88SMMS%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E5%85%8D%E8%B4%B9%E7%9A%84%E5%9B%BE%E5%BA%8A/</url>
+      
+        <content type="html"><![CDATA[<h1 id="在SMMS中注册账户"><a href="#在SMMS中注册账户" class="headerlink" title="在SMMS中注册账户"></a>在SMMS中注册账户</h1><ol><li><p>注册账户，smms的访问地址： <a href="https://sm.ms/">https://sm.ms/</a></p></li><li><p>注册好之后，获取smms中的token值<br><img src="https://s2.loli.net/2022/01/07/ha8fmXuCFEv5QBg.png" alt="20220107171943"></p></li></ol><h1 id="在vsCode中使用picGo"><a href="#在vsCode中使用picGo" class="headerlink" title="在vsCode中使用picGo"></a>在vsCode中使用picGo</h1><ol><li><p>安装picGo插件<br><img src="https://s2.loli.net/2022/01/07/deWqRhsKSLGtYcC.png" alt="20220107172133"></p></li><li><p>修改配置，搜索smms，填写自己的smms中的token值<br><img src="https://s2.loli.net/2022/01/07/1qBlGF5Wj9N2cyQ.png" alt="20220107172339"></p></li><li><p>保存后，即可上传文件，操作如下：</p><p> ① 截图操作后，图片保存在了粘贴板中</p><p> ② mac 用户的上传图片的快捷键是：option + command + u </p> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">windowns 用户上传图片的快捷键：ctrl + alt + u</span><br></pre></td></tr></table></figure><p> ③ 上传后，vscode界面的又下角可看到如下浮动窗口<br> <img src="https://s2.loli.net/2022/01/07/UCAwFmLlMVyqbvE.png" alt="20220107173047"></p><p> ④ 并在smms中可以看到上传的图片<br> <img src="https://s2.loli.net/2022/01/07/TxtDJSEngwjsbXo.png" alt="20220107173128"></p></li></ol><h1 id="参考网址"><a href="#参考网址" class="headerlink" title="参考网址"></a>参考网址</h1><p>【图床搭配 PicGo：打造高效的图片处理工作流】<a href="https://sspai.com/post/65716">https://sspai.com/post/65716</a><br>【比PicGo更好用的是VSCode里的PicGo插件】<a href="https://kouss.com/2019-7-11">https://kouss.com/2019-7-11</a><br>【SMMS网址】<a href="https://sm.ms/">https://sm.ms/</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> picgo </tag>
+            
+            <tag> 图床 </tag>
+            
+            <tag> SMMS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>【BUG记录】Java连接mysql数据库报错：Communications link failure</title>
       <link href="/2022/01/07/Java%E8%BF%9E%E6%8E%A5mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%A5%E9%94%99%EF%BC%9ACommunications-link-failure/"/>
       <url>/2022/01/07/Java%E8%BF%9E%E6%8E%A5mysql%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%A5%E9%94%99%EF%BC%9ACommunications-link-failure/</url>
