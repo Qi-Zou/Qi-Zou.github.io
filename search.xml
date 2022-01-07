@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2022/01/06/hello-world/"/>
+      <url>/2022/01/06/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>prometheus监控之node各项指标</title>
+      <link href="/2022/01/06/prometheus%E7%9B%91%E6%8E%A7%E4%B9%8Bnode%E5%90%84%E9%A1%B9%E6%8C%87%E6%A0%87/"/>
+      <url>/2022/01/06/prometheus%E7%9B%91%E6%8E%A7%E4%B9%8Bnode%E5%90%84%E9%A1%B9%E6%8C%87%E6%A0%87/</url>
+      
+        <content type="html"><![CDATA[<h1 id="根据node-exporter采集的指标得到想要的指标"><a href="#根据node-exporter采集的指标得到想要的指标" class="headerlink" title="根据node-exporter采集的指标得到想要的指标"></a>根据node-exporter采集的指标得到想要的指标</h1><ol><li><p>所有node节点的磁盘大小总和</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type：Singlestat</span><br><span class="line">Unit： bytes</span><br><span class="line">metrics:</span><br><span class="line">sum(node_filesystem_size_bytes&#123;device=~&quot;/.*&quot;&#125;)</span><br></pre></td></tr></table></figure></li><li><p>所有node节点的内存大小总和</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type：Singlestat</span><br><span class="line">Unit： bytes</span><br><span class="line">metrics:</span><br><span class="line">sum(node_memory_MemTotal_bytes)</span><br></pre></td></tr></table></figure></li><li><p>所有node节点的CPU大小总和</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type：Singlestat</span><br><span class="line">Unit： bytes</span><br><span class="line">metrics:</span><br><span class="line">count(node_cpu_seconds_total&#123;mode=&#x27;system&#x27;&#125;)</span><br></pre></td></tr></table></figure></li><li></li></ol><h1 id="node-exporter采集的指标"><a href="#node-exporter采集的指标" class="headerlink" title="node-exporter采集的指标"></a>node-exporter采集的指标</h1>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> prometheus </tag>
+            
+            <tag> node-exporter </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>img-test</title>
+      <link href="/2022/01/06/img-test/"/>
+      <url>/2022/01/06/img-test/</url>
+      
+        <content type="html"><![CDATA[<p>用于测试图片是否可以正常展示</p><img src="/2022/01/06/img-test/image-20220106104706904.png" class="" title="This is an image"><p>操作步骤：</p><ol><li>在_config.yml 中修改如下配置为 true<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure></li><li>文章中使用图片</li></ol><ul><li>第一种可以使用，makedown的格式  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![image-20220106105728993](image-20220106105728993.png)</span><br></pre></td></tr></table></figure></li><li>第二种 使用如下方式  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% asset_img image-20220106104706904.png This is an image %&#125;</span><br></pre></td></tr></table></figure></li></ul><blockquote><p>注意：其中的 image-20220106104706904.png 为需要展示的图片名称，该图片会放在与当前博客同名的目录下面</p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> test </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>新的第一篇博客</title>
+      <link href="/2022/01/06/my-first-blog/"/>
+      <url>/2022/01/06/my-first-blog/</url>
+      
+        <content type="html"><![CDATA[<h1 id="开始新的博客"><a href="#开始新的博客" class="headerlink" title="开始新的博客"></a>开始新的博客</h1><p>这里使用github+hexo搭建了自己的博客，参考了如下的博客文章：<br>[GitHub Pages + Hexo搭建个人博客网站，史上最全教程] <a href="https://blog.csdn.net/yaorongke/article/details/119089190">https://blog.csdn.net/yaorongke/article/details/119089190</a></p><h1 id="hexo操作"><a href="#hexo操作" class="headerlink" title="hexo操作"></a>hexo操作</h1><ol><li>创建新博客文档<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &#x27;博客文章标题&#x27;</span><br></pre></td></tr></table></figure></li><li>生成html文件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure></li><li>发布到github<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure></li><li>启动本地<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure></li></ol><h1 id="在不同机器上更新博客"><a href="#在不同机器上更新博客" class="headerlink" title="在不同机器上更新博客"></a>在不同机器上更新博客</h1><ol><li><p>在新机器上安装npm</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># 这里根据不同的系统进行安装</span><br></pre></td></tr></table></figure></li><li><p>安装hexo</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure></li><li><p>拉取github上面的项目</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:xxxxx/xxx.git</span><br></pre></td></tr></table></figure></li></ol><p>然后即可在博客的根目录下使用hexo进行操作</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> test </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
