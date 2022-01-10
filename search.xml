@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>hexo butterfly 主题搜索框问题解决</title>
+      <link href="/2022/01/10/hexo-butterfly-%E4%B8%BB%E9%A2%98%E6%90%9C%E7%B4%A2%E6%A1%86%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+      <url>/2022/01/10/hexo-butterfly-%E4%B8%BB%E9%A2%98%E6%90%9C%E7%B4%A2%E6%A1%86%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</url>
+      
+        <content type="html"><![CDATA[<h1 id="问题说明"><a href="#问题说明" class="headerlink" title="问题说明"></a>问题说明</h1><p>hexo 本地启动个人博客，访问没有任何问题，但是发布到github后，就会出现搜索框跑到界面的最下方<br><img src="https://s2.loli.net/2022/01/10/w8VWauQoRDkdi2p.png" alt="20220110085037"></p><h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><p>通过查询资料，发现是自己没有在本地执行 <code>hexo clean</code>操作导致的；<br>参考网址：<a href="https://github.com/jerryc127/hexo-theme-butterfly/issues/101">https://github.com/jerryc127/hexo-theme-butterfly/issues/101</a><br><img src="https://s2.loli.net/2022/01/10/u587eHsJTXi9tOK.png" alt="20220110084225"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 个人博客问题 </tag>
+            
+            <tag> butterfly </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>picgo配合SMMS构建自己免费的图床</title>
       <link href="/2022/01/07/picgo%E9%85%8D%E5%90%88SMMS%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E5%85%8D%E8%B4%B9%E7%9A%84%E5%9B%BE%E5%BA%8A/"/>
       <url>/2022/01/07/picgo%E9%85%8D%E5%90%88SMMS%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E5%85%8D%E8%B4%B9%E7%9A%84%E5%9B%BE%E5%BA%8A/</url>
