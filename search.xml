@@ -178,9 +178,9 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
+            
+            <tag> prometheus </tag>
             
             <tag> exporter </tag>
             
@@ -295,13 +295,13 @@
       
         <tags>
             
-            <tag> prometheus </tag>
+            <tag> bind-exporter </tag>
             
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
             
-            <tag> bind-exporter </tag>
+            <tag> prometheus </tag>
             
         </tags>
       
@@ -326,13 +326,13 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
             
-            <tag> elasticsearch-exporter </tag>
-            
             <tag> 云计算 </tag>
+            
+            <tag> prometheus </tag>
+            
+            <tag> elasticsearch-exporter </tag>
             
         </tags>
       
@@ -435,11 +435,11 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
+            
+            <tag> prometheus </tag>
             
         </tags>
       
@@ -483,9 +483,9 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
+            
+            <tag> prometheus </tag>
             
         </tags>
       
