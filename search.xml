@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>java代理模式</title>
+      <link href="/2022/01/16/java%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"/>
+      <url>/2022/01/16/java%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</url>
+      
+        <content type="html"><![CDATA[<h1 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h1><p>代理模式是一种比较好理解的设计模式，简单来说就是通过代理，可以提到对真是对象的访问，这样就可以在不修改真实对象的情况下，提供额外的功能，扩展目标对象<br>举个例子：<br>你找外卖小哥帮你取餐，外卖小哥就是你的代理对象，代理的行为就是取餐</p><p>代理模式分为：静态代理和动态代理两种实现方式<br>思维导图整理：<br><img src="https://s2.loli.net/2022/01/16/5x4BQIhZVKSGrsb.png" alt="代理模式"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> java基础知识 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>推荐一款超好用的IDEA插件:Sequencediagram</title>
       <link href="/2022/01/12/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE%E8%B6%85%E5%A5%BD%E7%94%A8%E7%9A%84IDEA%E6%8F%92%E4%BB%B6-Sequencediagram/"/>
       <url>/2022/01/12/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE%E8%B6%85%E5%A5%BD%E7%94%A8%E7%9A%84IDEA%E6%8F%92%E4%BB%B6-Sequencediagram/</url>
@@ -178,9 +197,9 @@
       
         <tags>
             
-            <tag> 云监控 </tag>
-            
             <tag> prometheus </tag>
+            
+            <tag> 云监控 </tag>
             
             <tag> exporter </tag>
             
@@ -295,13 +314,13 @@
       
         <tags>
             
-            <tag> bind-exporter </tag>
+            <tag> prometheus </tag>
             
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
             
-            <tag> prometheus </tag>
+            <tag> bind-exporter </tag>
             
         </tags>
       
@@ -326,13 +345,13 @@
       
         <tags>
             
-            <tag> 云监控 </tag>
-            
-            <tag> 云计算 </tag>
-            
             <tag> prometheus </tag>
             
             <tag> elasticsearch-exporter </tag>
+            
+            <tag> 云监控 </tag>
+            
+            <tag> 云计算 </tag>
             
         </tags>
       
@@ -435,11 +454,11 @@
       
         <tags>
             
+            <tag> prometheus </tag>
+            
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
-            
-            <tag> prometheus </tag>
             
         </tags>
       
@@ -483,9 +502,9 @@
       
         <tags>
             
-            <tag> 云监控 </tag>
-            
             <tag> prometheus </tag>
+            
+            <tag> 云监控 </tag>
             
         </tags>
       
