@@ -8,7 +8,7 @@
       <link href="/2022/01/25/Kubernetes-%E5%85%A5%E9%97%A8-%E8%BF%9B%E9%98%B6%E5%AE%9E%E6%88%98/"/>
       <url>/2022/01/25/Kubernetes-%E5%85%A5%E9%97%A8-%E8%BF%9B%E9%98%B6%E5%AE%9E%E6%88%98/</url>
       
-        <content type="html"><![CDATA[<p><img src="https://kuboard.cn/assets/img/module_03_nodes.38f0ef71.svg" alt="image-2022010715235268x"></p><p>作为初学者，这篇文章可以很好的入门<br>参考文章：<a href="https://mp.weixin.qq.com/s/mUF0AEncu3T2yDqKyt-0Ow">https://mp.weixin.qq.com/s/mUF0AEncu3T2yDqKyt-0Ow</a></p>]]></content>
+        <content type="html"><![CDATA[<p>作为初学者，这篇文章可以很好的入门<br>参考文章：<a href="https://mp.weixin.qq.com/s/mUF0AEncu3T2yDqKyt-0Ow">https://mp.weixin.qq.com/s/mUF0AEncu3T2yDqKyt-0Ow</a></p><p>思维导图：<br><img src="https://s2.loli.net/2022/01/25/gGyXmJ6ortpLW9Q.png" alt="K8S"></p>]]></content>
       
       
       
@@ -216,9 +216,9 @@
       
         <tags>
             
-            <tag> 云监控 </tag>
-            
             <tag> prometheus </tag>
+            
+            <tag> 云监控 </tag>
             
             <tag> exporter </tag>
             
@@ -333,13 +333,13 @@
       
         <tags>
             
-            <tag> bind-exporter </tag>
+            <tag> prometheus </tag>
             
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
             
-            <tag> prometheus </tag>
+            <tag> bind-exporter </tag>
             
         </tags>
       
@@ -364,13 +364,13 @@
       
         <tags>
             
-            <tag> 云监控 </tag>
-            
-            <tag> 云计算 </tag>
-            
             <tag> prometheus </tag>
             
             <tag> elasticsearch-exporter </tag>
+            
+            <tag> 云监控 </tag>
+            
+            <tag> 云计算 </tag>
             
         </tags>
       
@@ -473,11 +473,11 @@
       
         <tags>
             
+            <tag> prometheus </tag>
+            
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
-            
-            <tag> prometheus </tag>
             
         </tags>
       
@@ -521,9 +521,9 @@
       
         <tags>
             
-            <tag> 云监控 </tag>
-            
             <tag> prometheus </tag>
+            
+            <tag> 云监控 </tag>
             
         </tags>
       
