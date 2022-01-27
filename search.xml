@@ -8,7 +8,7 @@
       <link href="/2022/01/27/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/"/>
       <url>/2022/01/27/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h1 id="手把手教大家使用github搭建个人博客"><a href="#手把手教大家使用github搭建个人博客" class="headerlink" title="手把手教大家使用github搭建个人博客"></a>手把手教大家使用github搭建个人博客</h1><p>hello </p><p>搭建的教程，大家可以参考：<a href="https://segmentfault.com/a/1190000017986794">https://segmentfault.com/a/1190000017986794</a></p><p>首先，需要准备的环境：</p><ul><li>NODEJS</li></ul><p>​        根据自己的系统，选择相应的安装方式即可</p><p>​        地址：<a href="https://nodejs.org/en/download/">https://nodejs.org/en/download/</a></p><p>安装完成后，可以使用如下命令，验证是否安装成功</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br></pre></td></tr></table></figure><ul><li>GIT</li></ul><p>​        第二个需要准备的就是Git，同样根据自己的系统进行安装即可</p><p>​        使用如下命令进行验证：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure><p>到这里环境就准备好了</p><p>接下来我们安装，hexo</p><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><p>我的环境已经安装了，所以，大家按照如下命令安装一下即可：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure><p>验证方式：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo --version</span><br></pre></td></tr></table></figure><p>第二步就是，创建博客的目录，进行初始化</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init myBlog</span><br></pre></td></tr></table></figure><p>这里的网速可能有些慢，我快进</p><p>需要等几分钟</p><p>OK，</p><p>初始化完成后，可以看到如下的目录结构</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">_config.landscape.ymlpackage-lock.jsonsource</span><br><span class="line">_config.ymlpackage.jsonthemes</span><br><span class="line">node_modulesscaffolds</span><br></pre></td></tr></table></figure><p>到这里，本地的个人博客已经搭建好</p><p>运行看看，执行如下命令：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure><p>在网页中访问：localhost:4000</p><p>可以正常看到hexo的首页即可</p><p>好，现在本地博客搭建好了之后，我们就需要将本地博客生成的博文关联到github上， 就可以通过github直接访问当我们的博客了</p><h2 id="个人博客关联到github"><a href="#个人博客关联到github" class="headerlink" title="个人博客关联到github"></a>个人博客关联到github</h2><ol><li><p>注册github账户</p><p>这一步，相信大家应该都是有的</p><p>我这里不演示怎么注册了</p></li><li><p>创建同名的仓库</p><p>创建一个与自己用户名相同的仓库， 并以 .github.io结尾，注意，这里是比需要  以这个结尾</p><p>我这里是已经创建了的，就不在继续创建</p><p>最后点击创建即可</p></li><li><p>创建仓库后，在自己的仓库中创建一个文件 ： index.html</p><p>点击创建即可，我这里也不创建了， 因为已经创建好了</p></li><li><p>接下来就是访问自己的仓库地址，就是刚刚自己创建的仓库名，我的是（Qi-Zou.github.io）,就可以看到刚才的index.html的入口了</p></li><li><p>接下来就是如何将本地博客hexo生成的网页，传到github上</p></li></ol><h2 id="本地hexo博文传入github"><a href="#本地hexo博文传入github" class="headerlink" title="本地hexo博文传入github"></a>本地hexo博文传入github</h2><ol><li><p>首先就是打通git的关联</p></li><li><p>通过 cat ~/.ssh/id_rsa.pub 查看本机的SSH key，如果没有，那么就需要先创建</p></li><li><p>先设置本地git的用户</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;用户名&quot;</span><br><span class="line">git config --global user.email &quot;邮箱地址&quot;</span><br></pre></td></tr></table></figure><p>这里的用户名 和  邮箱地址 是 github上面的用户名和邮箱地址</p><p>用户名，就是刚才创建仓库时，用到过的</p><p>邮箱，可以在you profile 页面的 Emails标签页中看到</p></li><li><p>配置好本地git用户后，生成 ssh key</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &#x27;上面的邮箱&#x27;</span><br></pre></td></tr></table></figure><p>三次回车后，你就可以使用第  cat ~/.ssh/id_rsa.pub 这个命令，看到本机的 ssh key</p></li><li><p>确认并添加主机到本机SSH可信列表 ， 使用如下命令</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure></li><li><p>现在就需要将本地git关联到你的github远程仓库了</p></li><li><p>在github中添加好自己的ssh key </p></li><li><p>至此，本地就与远程的github仓库进行了关联</p></li><li><p>现在就是如何将hexo的内容推送到github</p></li><li><p>打开之前初始化hexo时，产生的目录，打开_config.yml</p></li><li><p>在文件的末尾修改如下内容</p><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">&#x27;git&#x27;</span></span><br><span class="line">  <span class="attr">repo:</span></span><br><span class="line">    <span class="attr">github:</span> <span class="string">https://github.com/Qi-Zou/Qi-Zou.github.io.git</span>  <span class="comment"># 复制自己创建的github仓库的地址，</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure><p>其中：github后面填写的地址，就是刚才自己创建的仓库中的http的地址</p></li><li><p>最后，给hexo安装一个git插件</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></li><li><p>然后执行如下命令，构建和推送本地的博文</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure><p>我这里进入到我自己的博文目录下进行推送</p><p>完成推送后，就可以通过 自己的仓库地址访问到自己写的博文了</p></li><li><p>本地创作，演示写一篇博客，然后推送</p><p>① hexo new “手把手教你如何利用github搭建个人博客”</p><p>​        这个命令执行后，会在之前初始化后的博客目录下的 source/_posts目录下生成博客的md文档</p><p>② 编写博客<br>③ 构建并发布<br>hexo g -d<br>④ 访问博客 , 本地发布之后，也许会要一会儿才可以看到，如果一直没有看到，那么就执行如下命令<br>hexo clean<br>再执行构建和发布命令<br>hexo g -d<br>⑤ 如果像快速看到效果，可以本地先运行看看<br>hexo s<br>刚才没有保存，所以，运行后没有看到内容，保存好后，在运行就可以看到了</p></li></ol>]]></content>
       
       
       
@@ -269,9 +269,9 @@
       
         <tags>
             
-            <tag> 云监控 </tag>
-            
             <tag> prometheus </tag>
+            
+            <tag> 云监控 </tag>
             
             <tag> exporter </tag>
             
@@ -386,13 +386,13 @@
       
         <tags>
             
-            <tag> bind-exporter </tag>
+            <tag> prometheus </tag>
             
             <tag> 云监控 </tag>
             
-            <tag> 云计算 </tag>
+            <tag> bind-exporter </tag>
             
-            <tag> prometheus </tag>
+            <tag> 云计算 </tag>
             
         </tags>
       
@@ -417,11 +417,11 @@
       
         <tags>
             
+            <tag> prometheus </tag>
+            
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
-            
-            <tag> prometheus </tag>
             
             <tag> elasticsearch-exporter </tag>
             
@@ -526,11 +526,11 @@
       
         <tags>
             
+            <tag> prometheus </tag>
+            
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
-            
-            <tag> prometheus </tag>
             
         </tags>
       
@@ -574,9 +574,9 @@
       
         <tags>
             
-            <tag> 云监控 </tag>
-            
             <tag> prometheus </tag>
+            
+            <tag> 云监控 </tag>
             
         </tags>
       
