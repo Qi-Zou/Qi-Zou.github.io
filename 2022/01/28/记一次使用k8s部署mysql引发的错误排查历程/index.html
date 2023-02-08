@@ -1,22 +1,26 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/me/img/favicon.png">
-  <link rel="icon" href="/me/img/favicon.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="niuwa">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="问题描述，这是最开始不知道如何排查问题时，看到的最开始的错误如下：  0&#x2F;3 nodes are available: 1 node(s) had taint {node-role.kubernetes.io&#x2F;master: }, that the pod didn’t tolerate, 2 node(s) had taint {node.kubernetes.io&#x2F;not-ready: },">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/me/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/me/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/me/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/me/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/me/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"qi-zou.github.io","root":"/me/","images":"/me/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/me/js/config.js"></script>
+<meta name="description" content="问题描述，这是最开始不知道如何排查问题时，看到的最开始的错误如下：  0&#x2F;3 nodes are available: 1 node(s) had taint {node-role.kubernetes.io&#x2F;master: }, that the pod didn’t tolerate, 2 node(s) had taint {node.kubernetes.io&#x2F;not-ready: },">
 <meta property="og:type" content="article">
 <meta property="og:title" content="记一次使用k8s部署mysql引发的错误排查历程">
 <meta property="og:url" content="http://qi-zou.github.io/2022/01/28/%E8%AE%B0%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8k8s%E9%83%A8%E7%BD%B2mysql%E5%BC%95%E5%8F%91%E7%9A%84%E9%94%99%E8%AF%AF%E6%8E%92%E6%9F%A5%E5%8E%86%E7%A8%8B/index.html">
@@ -37,219 +41,201 @@
 <meta property="article:modified_time" content="2022-01-28T10:04:30.887Z">
 <meta property="article:author" content="niuwa">
 <meta property="article:tag" content="k8s">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://s2.loli.net/2022/01/28/jgdPCq4V2FEnmQ5.png">
-  
-  
-  <title>记一次使用k8s部署mysql引发的错误排查历程 - 牛蛙</title>
-
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+<link rel="canonical" href="http://qi-zou.github.io/2022/01/28/%E8%AE%B0%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8k8s%E9%83%A8%E7%BD%B2mysql%E5%BC%95%E5%8F%91%E7%9A%84%E9%94%99%E8%AF%AF%E6%8E%92%E6%9F%A5%E5%8E%86%E7%A8%8B/">
 
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
-    
-  
 
-  
-    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://qi-zou.github.io/2022/01/28/%E8%AE%B0%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8k8s%E9%83%A8%E7%BD%B2mysql%E5%BC%95%E5%8F%91%E7%9A%84%E9%94%99%E8%AF%AF%E6%8E%92%E6%9F%A5%E5%8E%86%E7%A8%8B/","path":"2022/01/28/记一次使用k8s部署mysql引发的错误排查历程/","title":"记一次使用k8s部署mysql引发的错误排查历程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>记一次使用k8s部署mysql引发的错误排查历程 | 牛蛙</title>
   
 
 
-<!-- 主题依赖的图标库，不要自行修改 -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
 
 
+  <noscript>
+    <link rel="stylesheet" href="/me/css/noscript.css">
+  </noscript>
+</head>
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-
-<link  rel="stylesheet" href="/me/css/main.css" />
-
-<!-- 自定义样式保持在最底部 -->
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"qi-zou.github.io","root":"/me/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/me/local-search.xml"};
-  </script>
-  <script  src="/me/js/utils.js" ></script>
-  <script  src="/me/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 6.0.0"></head>
-
-
-<body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/me/">
-      <strong>Fluid</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/me/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/me/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/me/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/me/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/me/about/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
-            </a>
-          </li>
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
+
+  <div class="site-meta">
+
+    <a href="/me/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">牛蛙</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">积累-沉淀</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/me/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/me/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/me/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/me/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/me/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-schedule"><a href="/me/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/me/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+        <li class="menu-item menu-item-commonweal"><a href="/me/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
 </nav>
 
-    <div class="banner" id="banner" parallax=true
-         style="background: url('/me/img/default.png') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="记一次使用k8s部署mysql引发的错误排查历程">
-              
-            </span>
 
-            
-              <div class="mt-3">
+
+
+</div>
+        
   
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-01-28 15:42" pubdate>
-        2022年1月28日 下午
-      </time>
-    </span>
-  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">niuwa</p>
+  <div class="site-description" itemprop="description">整理和记录所思所想</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/me/archives/">
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/me/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/me/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
 </div>
 
-<div class="mt-1">
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      undefined 字
-    </span>
-  
 
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      NaN 分钟
-    </span>
-  
 
-  
-  
-</div>
-
-            
-          </div>
-
-          
         </div>
       </div>
     </div>
-  </header>
+  </aside>
+  <div class="sidebar-dimmer"></div>
 
-  <main>
+
+    </header>
+
     
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://qi-zou.github.io/2022/01/28/%E8%AE%B0%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8k8s%E9%83%A8%E7%BD%B2mysql%E5%BC%95%E5%8F%91%E7%9A%84%E9%94%99%E8%AF%AF%E6%8E%92%E6%9F%A5%E5%8E%86%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/me/images/avatar.gif">
+      <meta itemprop="name" content="niuwa">
+      <meta itemprop="description" content="整理和记录所思所想">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="牛蛙">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          记一次使用k8s部署mysql引发的错误排查历程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
 
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">记一次使用k8s部署mysql引发的错误排查历程</h1>
-            
-            <div class="markdown-body">
-              <p>问题描述，这是最开始不知道如何排查问题时，看到的最开始的错误如下：</p>
+      <time title="创建时间：2022-01-28 15:42:58 / 修改时间：18:04:30" itemprop="dateCreated datePublished" datetime="2022-01-28T15:42:58+08:00">2022-01-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>问题描述，这是最开始不知道如何排查问题时，看到的最开始的错误如下：</p>
 <blockquote>
 <p>0/3 nodes are available: 1 node(s) had taint {node-role.kubernetes.io/master: }, that the pod didn’t tolerate, 2 node(s) had taint {node.kubernetes.io/not-ready: }, that the pod didn’t tolerate.</p>
 </blockquote>
@@ -262,47 +248,47 @@
 <li><p>查看各节点的节点亲和度</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe node k8s-hostname-1 | grep Taints</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s2.loli.net/2022/01/28/jgdPCq4V2FEnmQ5.png" srcset="/me/img/loading.gif" lazyload alt="image-20220127172204944"></p>
+<p><img src="https://s2.loli.net/2022/01/28/jgdPCq4V2FEnmQ5.png" alt="image-20220127172204944"></p>
 <p>其中 k8s-hostname-1 为各节点的hostname</p>
 </li>
 <li><p>总共三个节点（一个master，2个node），发现全部都是<code>NoSchedule</code>状态</p>
 </li>
 <li><p>尝试去除污点</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl taint nodes k8s-hostname-1 node-role.kubernetes.io/master:NoSchedule-</span><br></pre></td></tr></table></figure>
-<p> <img src="https://s2.loli.net/2022/01/28/rHynk3KvifVUuOq.png" srcset="/me/img/loading.gif" lazyload alt="image-20220127172504118"></p>
+<p> <img src="https://s2.loli.net/2022/01/28/rHynk3KvifVUuOq.png" alt="image-20220127172504118"></p>
 </li>
-<li><p>虽然提示去除了污点，但是再去查看时，污点依然存在<br><img src="https://s2.loli.net/2022/01/28/WEF8jCXByxdzm9D.png" srcset="/me/img/loading.gif" lazyload alt="image-20220127172550251"></p>
+<li><p>虽然提示去除了污点，但是再去查看时，污点依然存在<br><img src="https://s2.loli.net/2022/01/28/WEF8jCXByxdzm9D.png" alt="image-20220127172550251"></p>
 </li>
 <li><p>最后发现，所有的节点状态都是处于 NotReady ，查看其中一个node的详细情况</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
-<p><img src="https://s2.loli.net/2022/01/28/3KymMpNVhzFxGoa.png" srcset="/me/img/loading.gif" lazyload alt="image-20220128102317301"></p>
+<p><img src="https://s2.loli.net/2022/01/28/3KymMpNVhzFxGoa.png" alt="image-20220128102317301"></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe node k8s-hostname-1</span><br></pre></td></tr></table></figure>
-<p><img src="https://s2.loli.net/2022/01/28/3bmdpRXHY4gN7Qi.png" srcset="/me/img/loading.gif" lazyload alt="image-20220128102410103"></p>
+<p><img src="https://s2.loli.net/2022/01/28/3bmdpRXHY4gN7Qi.png" alt="image-20220128102410103"></p>
 </li>
 <li><p>从节点的详情查看到节点的cni插件没有被初始化，网卡的插件没有准备好，导致节点都处于NotReady状态</p>
 </li>
-<li><p>使用 <em>systemctl status kubelet</em> 也可以查看到问题所在<br><img src="https://s2.loli.net/2022/01/28/XTwYnDcgCafbtUQ.png" srcset="/me/img/loading.gif" lazyload alt="image-20220128102750449"></p>
+<li><p>使用 <em>systemctl status kubelet</em> 也可以查看到问题所在<br><img src="https://s2.loli.net/2022/01/28/XTwYnDcgCafbtUQ.png" alt="image-20220128102750449"></p>
 </li>
 <li><p>最后解决办法是重启 containerd 即可</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart containerd</span><br></pre></td></tr></table></figure></li>
-<li><p>此时再看node的污点已经没有了<br><img src="https://s2.loli.net/2022/01/28/ZjxvfaKANOYEM8P.png" srcset="/me/img/loading.gif" lazyload alt="image-20220128110644548"></p>
+<li><p>此时再看node的污点已经没有了<br><img src="https://s2.loli.net/2022/01/28/ZjxvfaKANOYEM8P.png" alt="image-20220128110644548"></p>
 </li>
 </ol>
 </blockquote>
 <p>到这里，k8s集群 才算是正常的搭建好了，下面继续部署mysql</p>
 <blockquote>
 <ol>
-<li><p>准备好了mysql的pv和deployment的配置文件<br><img src="https://s2.loli.net/2022/01/28/nG3hmJLUCMPFbWa.png" srcset="/me/img/loading.gif" lazyload alt="image-20220128111422781"></p>
+<li><p>准备好了mysql的pv和deployment的配置文件<br><img src="https://s2.loli.net/2022/01/28/nG3hmJLUCMPFbWa.png" alt="image-20220128111422781"></p>
 </li>
 <li><p>准备安装</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f mysql-pv.yaml</span><br><span class="line">kubectl apply -f mysql-deployment.yaml</span><br></pre></td></tr></table></figure></li>
 <li><p>随后查看mysql的pod状态，处于ImagePullBackOff</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod</span><br></pre></td></tr></table></figure>
-<p><img src="https://s2.loli.net/2022/01/28/r5x4oVtpayKjWlE.png" srcset="/me/img/loading.gif" lazyload alt="image-20220128111558033"></p>
+<p><img src="https://s2.loli.net/2022/01/28/r5x4oVtpayKjWlE.png" alt="image-20220128111558033"></p>
 </li>
 <li><p>查看详情后，发现是镜像无法拉取，这里用的是内部自己搭建的镜像仓库<code>harbor</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pod mysql-765868998c-9cdxw</span><br></pre></td></tr></table></figure>
-<p><img src="https://s2.loli.net/2022/01/28/eCQHihOrsUf43ba.png" srcset="/me/img/loading.gif" lazyload alt="image-20220128111959878"></p>
+<p><img src="https://s2.loli.net/2022/01/28/eCQHihOrsUf43ba.png" alt="image-20220128111959878"></p>
 </li>
 <li><p>通过查询资料，基本都是说的要创建 <code>secret</code></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret docker-registry default --docker-server=harbor.core.powercloud.com --docker-username=admin --docker-password=rootxxx</span><br></pre></td></tr></table></figure></li>
@@ -315,149 +301,68 @@
 <p>（待完善）</p>
 </blockquote>
 
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/me/tags/k8s/">k8s</a>
-                    
-                  </div>
-                
-              </div>
-              
-                <p class="note note-warning">
-                  
-                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
-                  
-                </p>
-              
-              
-                <div class="post-prevnext">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/me/2022/02/09/%E9%83%A8%E7%BD%B2prometheus/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">部署prometheus</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/me/2022/01/26/%E4%BD%BF%E7%94%A8sealos%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E5%AE%89%E8%A3%85K8S%E9%9B%86%E7%BE%A4/">
-                        <span class="hidden-mobile">使用sealos一行命令安装K8S集群</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
-        </div>
-      </div>
     </div>
+
     
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/me/tags/k8s/" rel="tag"># k8s</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/me/2022/01/26/%E4%BD%BF%E7%94%A8sealos%E4%B8%80%E8%A1%8C%E5%91%BD%E4%BB%A4%E5%AE%89%E8%A3%85K8S%E9%9B%86%E7%BE%A4/" rel="prev" title="使用sealos一行命令安装K8S集群">
+                  <i class="fa fa-chevron-left"></i> 使用sealos一行命令安装K8S集群
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/me/2022/02/09/%E9%83%A8%E7%BD%B2prometheus/" rel="next" title="部署prometheus">
+                  部署prometheus <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
 </div>
 
-      </div>
-    
-  </div>
+
+
+
+
+
 </div>
-
-<!-- Custom -->
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-    
-
-    
   </main>
 
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niuwa</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
-  
+
+    </div>
+  </footer>
 
   
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/me/js/comments.js"></script><script src="/me/js/utils.js"></script><script src="/me/js/motion.js"></script><script src="/me/js/schemes/muse.js"></script><script src="/me/js/next-boot.js"></script>
 
   
-</footer>
 
 
-  <!-- SCRIPTS -->
-  
-  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
-<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
-<script  src="/me/js/events.js" ></script>
-<script  src="/me/js/plugins.js" ></script>
-
-<!-- Plugins -->
-
-
-  <script  src="/me/js/local-search.js" ></script>
-
-
-
-  
-    <script  src="/me/js/img-lazyload.js" ></script>
-  
 
 
 
@@ -465,51 +370,6 @@
 
 
 
-  
-    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
-  
-  
-    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
-  
-
-
-
-
-
-
-  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var title = document.getElementById('subtitle').title;
-      
-        typing(title);
-      
-    })(window, document);
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 主题的启动项 保持在最底部 -->
-<script  src="/me/js/boot.js" ></script>
 
 
 </body>

@@ -1,22 +1,26 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/me/img/favicon.png">
-  <link rel="icon" href="/me/img/favicon.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="niuwa">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="什么是springbootSpring Boot 是 Spring 开源组织下的子项目，是 Spring 组件一站式解决方案，主要是简化了使用 Spring 的难度，简省了繁重的配置，提供了各种启动器，开发者能快速上手。 为什么要用springbootSpring Boot 优点非常多，如： 独立运行简化配置自动配置无代码生成和XML配置应用监控上手容易…Spring Boot 集这么多优点于一身">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/me/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/me/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/me/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/me/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/me/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"qi-zou.github.io","root":"/me/","images":"/me/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/me/js/config.js"></script>
+<meta name="description" content="什么是springbootSpring Boot 是 Spring 开源组织下的子项目，是 Spring 组件一站式解决方案，主要是简化了使用 Spring 的难度，简省了繁重的配置，提供了各种启动器，开发者能快速上手。 为什么要用springbootSpring Boot 优点非常多，如： 独立运行简化配置自动配置无代码生成和XML配置应用监控上手容易…Spring Boot 集这么多优点于一身">
 <meta property="og:type" content="article">
 <meta property="og:title" content="温习springboot">
 <meta property="og:url" content="http://qi-zou.github.io/2022/01/10/%E6%B8%A9%E4%B9%A0springboot/index.html">
@@ -27,218 +31,201 @@
 <meta property="article:modified_time" content="2022-01-10T15:48:09.913Z">
 <meta property="article:author" content="niuwa">
 <meta property="article:tag" content="springboot学习">
-<meta name="twitter:card" content="summary_large_image">
-  
-  
-  <title>温习springboot - 牛蛙</title>
-
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+<meta name="twitter:card" content="summary">
 
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+<link rel="canonical" href="http://qi-zou.github.io/2022/01/10/%E6%B8%A9%E4%B9%A0springboot/">
 
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
-    
-  
 
-  
-    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://qi-zou.github.io/2022/01/10/%E6%B8%A9%E4%B9%A0springboot/","path":"2022/01/10/温习springboot/","title":"温习springboot"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>温习springboot | 牛蛙</title>
   
 
 
-<!-- 主题依赖的图标库，不要自行修改 -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
 
 
+  <noscript>
+    <link rel="stylesheet" href="/me/css/noscript.css">
+  </noscript>
+</head>
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-
-<link  rel="stylesheet" href="/me/css/main.css" />
-
-<!-- 自定义样式保持在最底部 -->
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"qi-zou.github.io","root":"/me/","version":"1.8.14","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/me/local-search.xml"};
-  </script>
-  <script  src="/me/js/utils.js" ></script>
-  <script  src="/me/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 6.0.0"></head>
-
-
-<body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/me/">
-      <strong>Fluid</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/me/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/me/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/me/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/me/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/me/about/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
-            </a>
-          </li>
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
+
+  <div class="site-meta">
+
+    <a href="/me/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">牛蛙</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">积累-沉淀</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/me/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/me/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/me/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/me/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/me/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-schedule"><a href="/me/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/me/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+        <li class="menu-item menu-item-commonweal"><a href="/me/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
 </nav>
 
-    <div class="banner" id="banner" parallax=true
-         style="background: url('/me/img/default.png') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="温习springboot">
-              
-            </span>
 
-            
-              <div class="mt-3">
+
+
+</div>
+        
   
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-01-10 23:15" pubdate>
-        2022年1月10日 晚上
-      </time>
-    </span>
-  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFspringboot"><span class="nav-number">1.</span> <span class="nav-text">什么是springboot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8springboot"><span class="nav-number">2.</span> <span class="nav-text">为什么要用springboot</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-%E7%9A%84%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%9C%89%E5%93%AA%E5%87%A0%E4%B8%AA%EF%BC%9F%E5%AE%83%E4%BB%AC%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">Spring Boot 的核心配置文件有哪几个？它们的区别是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E6%A0%BC%E5%BC%8F%EF%BC%9F%E5%AE%83%E4%BB%AC%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">Spring Boot 的配置文件有哪几种格式？它们有什么区别？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%B3%A8%E8%A7%A3%E6%98%AF%E5%93%AA%E4%B8%AA%EF%BC%9F%E5%AE%83%E4%B8%BB%E8%A6%81%E7%94%B1%E5%93%AA%E5%87%A0%E4%B8%AA%E6%B3%A8%E8%A7%A3%E7%BB%84%E6%88%90%E7%9A%84%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">Spring Boot 的核心注解是哪个？它主要由哪几个注解组成的？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%90%AF-Spring-Boot-%E7%89%B9%E6%80%A7%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">开启 Spring Boot 特性有哪几种方式？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-%E9%9C%80%E8%A6%81%E7%8B%AC%E7%AB%8B%E7%9A%84%E5%AE%B9%E5%99%A8%E8%BF%90%E8%A1%8C%E5%90%97%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">Spring Boot 需要独立的容器运行吗？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C-Spring-Boot-%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%9F"><span class="nav-number">8.</span> <span class="nav-text">运行 Spring Boot 有哪几种方式？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">Spring Boot 自动配置原理是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-%E7%9A%84%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">Spring Boot 的目录结构是怎样的？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%A0%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3-Spring-Boot-%E4%B8%AD%E7%9A%84-Starters%EF%BC%9F"><span class="nav-number">11.</span> <span class="nav-text">你如何理解 Spring Boot 中的 Starters？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8-Spring-Boot-%E5%90%AF%E5%8A%A8%E7%9A%84%E6%97%B6%E5%80%99%E8%BF%90%E8%A1%8C%E4%B8%80%E4%BA%9B%E7%89%B9%E5%AE%9A%E7%9A%84%E4%BB%A3%E7%A0%81%EF%BC%9F"><span class="nav-number">12.</span> <span class="nav-text">如何在 Spring Boot 启动的时候运行一些特定的代码？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%9F"><span class="nav-number">13.</span> <span class="nav-text">Spring Boot 有哪几种读取配置的方式？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-%E6%94%AF%E6%8C%81%E5%93%AA%E4%BA%9B%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6%EF%BC%9F%E6%8E%A8%E8%8D%90%E5%92%8C%E9%BB%98%E8%AE%A4%E7%9A%84%E6%97%A5%E5%BF%97%E6%A1%86%E6%9E%B6%E6%98%AF%E5%93%AA%E4%B8%AA%EF%BC%9F"><span class="nav-number">14.</span> <span class="nav-text">Spring Boot 支持哪些日志框架？推荐和默认的日志框架是哪个？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringBoot-%E5%AE%9E%E7%8E%B0%E7%83%AD%E9%83%A8%E7%BD%B2%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%9F"><span class="nav-number">15.</span> <span class="nav-text">SpringBoot 实现热部署有哪几种方式？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%A0%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3-Spring-Boot-%E9%85%8D%E7%BD%AE%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F%EF%BC%9F"><span class="nav-number">16.</span> <span class="nav-text">你如何理解 Spring Boot 配置加载顺序？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-%E5%A6%82%E4%BD%95%E5%AE%9A%E4%B9%89%E5%A4%9A%E5%A5%97%E4%B8%8D%E5%90%8C%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%EF%BC%9F"><span class="nav-number">17.</span> <span class="nav-text">Spring Boot 如何定义多套不同环境配置？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-%E5%8F%AF%E4%BB%A5%E5%85%BC%E5%AE%B9%E8%80%81-Spring-%E9%A1%B9%E7%9B%AE%E5%90%97%EF%BC%8C%E5%A6%82%E4%BD%95%E5%81%9A%EF%BC%9F"><span class="nav-number">18.</span> <span class="nav-text">Spring Boot 可以兼容老 Spring 项目吗，如何做？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%9D%E6%8A%A4-Spring-Boot-%E5%BA%94%E7%94%A8%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="nav-number">19.</span> <span class="nav-text">保护 Spring Boot 应用有哪些方法？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Boot-2-X-%E6%9C%89%E4%BB%80%E4%B9%88%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%9F%E4%B8%8E-1-X-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">20.</span> <span class="nav-text">Spring Boot 2.X 有什么新特性？与 1.X 有什么区别？</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">niuwa</p>
+  <div class="site-description" itemprop="description">整理和记录所思所想</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/me/archives/">
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/me/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/me/tags/">
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
 </div>
 
-<div class="mt-1">
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      undefined 字
-    </span>
-  
 
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      NaN 分钟
-    </span>
-  
 
-  
-  
-</div>
-
-            
-          </div>
-
-          
         </div>
       </div>
     </div>
-  </header>
+  </aside>
+  <div class="sidebar-dimmer"></div>
 
-  <main>
+
+    </header>
+
     
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://qi-zou.github.io/2022/01/10/%E6%B8%A9%E4%B9%A0springboot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/me/images/avatar.gif">
+      <meta itemprop="name" content="niuwa">
+      <meta itemprop="description" content="整理和记录所思所想">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="牛蛙">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          温习springboot
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
 
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">温习springboot</h1>
-            
-            <div class="markdown-body">
-              <h1 id="什么是springboot"><a href="#什么是springboot" class="headerlink" title="什么是springboot"></a>什么是springboot</h1><p>Spring Boot 是 Spring 开源组织下的子项目，是 Spring 组件一站式解决方案，主要是简化了使用 Spring 的难度，简省了繁重的配置，提供了各种启动器，开发者能快速上手。</p>
+      <time title="创建时间：2022-01-10 23:15:27 / 修改时间：23:48:09" itemprop="dateCreated datePublished" datetime="2022-01-10T23:15:27+08:00">2022-01-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="什么是springboot"><a href="#什么是springboot" class="headerlink" title="什么是springboot"></a>什么是springboot</h1><p>Spring Boot 是 Spring 开源组织下的子项目，是 Spring 组件一站式解决方案，主要是简化了使用 Spring 的难度，简省了繁重的配置，提供了各种启动器，开发者能快速上手。</p>
 <h1 id="为什么要用springboot"><a href="#为什么要用springboot" class="headerlink" title="为什么要用springboot"></a>为什么要用springboot</h1><p>Spring Boot 优点非常多，如：</p>
 <p>独立运行<br>简化配置<br>自动配置<br>无代码生成和XML配置<br>应用监控<br>上手容易<br>…<br>Spring Boot 集这么多优点于一身，为什么不用？</p>
 <h1 id="Spring-Boot-的核心配置文件有哪几个？它们的区别是什么？"><a href="#Spring-Boot-的核心配置文件有哪几个？它们的区别是什么？" class="headerlink" title="Spring Boot 的核心配置文件有哪几个？它们的区别是什么？"></a>Spring Boot 的核心配置文件有哪几个？它们的区别是什么？</h1><p>Spring Boot 的核心配置文件是 application 和 bootstrap 配置文件。</p>
@@ -289,149 +276,68 @@
 <h1 id="保护-Spring-Boot-应用有哪些方法？"><a href="#保护-Spring-Boot-应用有哪些方法？" class="headerlink" title="保护 Spring Boot 应用有哪些方法？"></a>保护 Spring Boot 应用有哪些方法？</h1><p>在生产中使用HTTPS<br>使用Snyk检查你的依赖关系<br>升级到最新版本<br>启用CSRF保护<br>使用内容安全策略防止XSS攻击<br>…</p>
 <h1 id="Spring-Boot-2-X-有什么新特性？与-1-X-有什么区别？"><a href="#Spring-Boot-2-X-有什么新特性？与-1-X-有什么区别？" class="headerlink" title="Spring Boot 2.X 有什么新特性？与 1.X 有什么区别？"></a>Spring Boot 2.X 有什么新特性？与 1.X 有什么区别？</h1><p>配置变更<br>JDK 版本升级<br>第三方类库升级<br>响应式 Spring 编程支持<br>HTTP/2 支持<br>配置属性绑定<br>更多改进与加强…</p>
 
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/me/tags/springboot%E5%AD%A6%E4%B9%A0/">springboot学习</a>
-                    
-                  </div>
-                
-              </div>
-              
-                <p class="note note-warning">
-                  
-                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
-                  
-                </p>
-              
-              
-                <div class="post-prevnext">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/me/2022/01/10/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0-%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">java多线程学习-思维导图</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/me/2022/01/10/Leetcode%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E6%9C%89%E6%95%88%E4%B8%89%E8%A7%92%E5%BD%A2%E7%9A%84%E4%B8%AA%E6%95%B0/">
-                        <span class="hidden-mobile">Leetcode刷题——有效三角形的个数</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
-        </div>
-      </div>
     </div>
+
     
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/me/tags/springboot%E5%AD%A6%E4%B9%A0/" rel="tag"># springboot学习</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/me/2022/01/10/Leetcode%E5%88%B7%E9%A2%98%E2%80%94%E2%80%94%E6%9C%89%E6%95%88%E4%B8%89%E8%A7%92%E5%BD%A2%E7%9A%84%E4%B8%AA%E6%95%B0/" rel="prev" title="Leetcode刷题——有效三角形的个数">
+                  <i class="fa fa-chevron-left"></i> Leetcode刷题——有效三角形的个数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/me/2022/01/10/java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0-%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE/" rel="next" title="java多线程学习-思维导图">
+                  java多线程学习-思维导图 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
 </div>
 
-      </div>
-    
-  </div>
+
+
+
+
+
 </div>
-
-<!-- Custom -->
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-    
-
-    
   </main>
 
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niuwa</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
-  
+
+    </div>
+  </footer>
 
   
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/me/js/comments.js"></script><script src="/me/js/utils.js"></script><script src="/me/js/motion.js"></script><script src="/me/js/schemes/muse.js"></script><script src="/me/js/next-boot.js"></script>
 
   
-</footer>
 
 
-  <!-- SCRIPTS -->
-  
-  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
-<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
-<script  src="/me/js/events.js" ></script>
-<script  src="/me/js/plugins.js" ></script>
-
-<!-- Plugins -->
-
-
-  <script  src="/me/js/local-search.js" ></script>
-
-
-
-  
-    <script  src="/me/js/img-lazyload.js" ></script>
-  
 
 
 
@@ -439,51 +345,6 @@
 
 
 
-  
-    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
-  
-  
-    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
-  
-
-
-
-
-
-
-  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var title = document.getElementById('subtitle').title;
-      
-        typing(title);
-      
-    })(window, document);
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 主题的启动项 保持在最底部 -->
-<script  src="/me/js/boot.js" ></script>
 
 
 </body>
