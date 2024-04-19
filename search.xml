@@ -4,13 +4,25 @@
   
     
     <entry>
-      <title>每日BUG</title>
-      <link href="/2024/04/19/%E6%AF%8F%E6%97%A5BUG/"/>
-      <url>/2024/04/19/%E6%AF%8F%E6%97%A5BUG/</url>
+      <title>每日BUG——Feign接口中的@GetMapping问题</title>
+      <link href="/2024/04/19/%E6%AF%8F%E6%97%A5BUG%E2%80%94%E2%80%94Feign%E6%8E%A5%E5%8F%A3%E4%B8%AD%E7%9A%84-GetMapping%E9%97%AE%E9%A2%98/"/>
+      <url>/2024/04/19/%E6%AF%8F%E6%97%A5BUG%E2%80%94%E2%80%94Feign%E6%8E%A5%E5%8F%A3%E4%B8%AD%E7%9A%84-GetMapping%E9%97%AE%E9%A2%98/</url>
       
-        <content type="html"><![CDATA[<p>这是一篇测试的文章</p>]]></content>
+        <content type="html"><![CDATA[<p><img src="/images/image-1.png"></p><p>本文讨论了在使用 Feign 客户端时，即使在方法上使用了@GetMapping注解，仍然可能会遇到调用出错的问题。通过在参数前添加@RequestParam注解可以解决这个问题。<br>关键要点包括：</p><ul><li>Feign 客户端默认使用 POST 方法处理请求参数。</li><li>在方法上使用@GetMapping注解时，参数需要使用@RequestParam注解进行装饰。</li><li>未使用@RequestParam注解时，Feign 可能会默认使用 POST 方法调用接口。</li></ul><h1 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h1><p><img src="/images/image.png"></p><p>代码如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient(value = &quot;oms-main-app&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">OmsMainAppClientApi</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/$&#123;xxx.api.prefix&#125;/workbench/listWorkbenchToDoByUser&quot;)</span></span><br><span class="line">    <span class="function">List&lt;BaseToDoCO&gt; <span class="title">listToDo</span><span class="params">(String loginName)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/$&#123;xxx.api.prefix&#125;/workbench/listWorkbenchToDoCommodity&quot;)</span></span><br><span class="line">    <span class="function">List&lt;BaseToDoCO&gt; <span class="title">allTodoList</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>调用如下：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">omsMainAppClientApi.listToDo(loginName);</span><br></pre></td></tr></table></figure><p>调用出错：</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">status <span class="number">405</span> reading OmsMainAppClientApi#listToDo(String); content: &#123;<span class="attr">&quot;timestamp&quot;</span>:<span class="number">1713420321063</span>,<span class="attr">&quot;status&quot;</span>:<span class="number">405</span>,<span class="attr">&quot;error&quot;</span>:<span class="string">&quot;Method Not Allowed&quot;</span>,</span><br><span class="line"><span class="attr">&quot;message&quot;</span>:<span class="string">&quot;Request method &#x27;POST&#x27; not supported&quot;</span>,<span class="attr">&quot;path&quot;</span>:<span class="string">&quot;/api/workbench/listWorkbenchToDoByUser&quot;</span>&#125; </span><br></pre></td></tr></table></figure><h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>这个问题可能是由于Feign Client默认使用POST方法，即使在方法上使用了@GetMapping注解。这是因为Feign Client在处理请求参数时，如果参数没有使用@RequestParam注解，那么Feign Client会默认使用POST方法，而不是GET方法。  你可以通过在参数前添加@RequestParam注解来解决这个问题。这样Feign Client就会知道这是一个GET请求的参数，而不是POST请求的body。  以下是修改后的代码：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.web.bind.annotation.RequestParam;</span><br><span class="line"></span><br><span class="line">@FeignClient(value = &quot;oms-main-app&quot;)</span><br><span class="line">public interface OmsMainAppClientApi &#123;</span><br><span class="line"></span><br><span class="line">    @GetMapping(&quot;/$&#123;xxx.api.prefix&#125;/workbench/listWorkbenchToDoByUser&quot;)</span><br><span class="line">    List&lt;BaseToDoCO&gt; listToDo(@RequestParam(&quot;loginName&quot;) String loginName);</span><br><span class="line"></span><br><span class="line">    @GetMapping(&quot;/$&#123;xxx.api.prefix&#125;/workbench/listWorkbenchToDoCommodity&quot;)</span><br><span class="line">    List&lt;BaseToDoCO&gt; allTodoList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h1><ol><li>Feign接口调用时，为什么已经使用了@GetMapping注解标识这是一个GET请求，一定还需要使用@RequestParam注解装饰在参数上？否则在调用时可能会默认使用的POST方式调用?<blockquote><p>答：<br>在使用 Feign 进行接口调用时，Feign 是一个声明式的 HTTP 客户端，它通过接口的方式定义了对远程服务的调用。默认情况下，Feign 使用的是 Spring MVC 的注解来定义接口，包括 @GetMapping、@PostMapping 等。<br>当你在 Feign 接口方法上使用 @GetMapping 注解标识为 GET 请求时，它告诉 Feign 这个方法应该被映射为一个 HTTP GET 请求。但是，在 Feign 中，方法参数并不会自动地映射到 URL 中的查询参数，这与 Spring MVC 的默认行为略有不同。<br>因此，如果你想要将方法参数作为查询参数传递到 GET 请求中，你需要使用 @RequestParam 注解来显式地声明这些参数，并将它们传递给 Feign 接口方法。如果你不使用 @RequestParam 注解装饰参数，Feign 将不会将参数添加到 URL 中，从而导致在调用时可能会出现不符合预期的行为，可能会默认使用 POST 请求而不是 GET 请求。<br>总之，使用 @RequestParam 注解来装饰参数是为了确保参数能够正确地传递到 GET 请求中，而不会被误解为 POST 请求。</p></blockquote></li></ol>]]></content>
       
       
+      <categories>
+          
+          <category> 每日BUG </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 每日BUG </tag>
+            
+        </tags>
       
     </entry>
     
@@ -68,25 +80,6 @@
             <tag> k8s </tag>
             
             <tag> sealos </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>关于中台的初步认识</title>
-      <link href="/2022/01/25/%E5%85%B3%E4%BA%8E%E4%B8%AD%E5%8F%B0%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/"/>
-      <url>/2022/01/25/%E5%85%B3%E4%BA%8E%E4%B8%AD%E5%8F%B0%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/</url>
-      
-        <content type="html"><![CDATA[<h1 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h1><p>根据时间线来探索中台的兴起：<br><strong>2003年</strong>，阿里巴巴成立了淘宝事业部<br><strong>2008年</strong>，阿里巴巴成立了天猫，最初期叫淘宝商城，当时是从淘宝团队中抽调一拨人，作为淘宝事业部中的一个部门进行运营；随着天猫业务的蓬勃发展，没过多久就单独成立了天猫事业部，成为跟淘宝并驾齐驱的两大电商事业部。此时也出现了两个问题：</p><ul><li>淘宝的技术团队同时支持两大电商的业务，淘宝业务需求满足的优先级高于天猫，严重影响了天猫的业务发展</li><li>当时淘宝和天猫是完全独立的两套体系，具备商品、交易、评价、支付等相同的功能</li></ul><p><strong>2009年</strong>，共享业务事业部应运而生，同时支持淘宝和天猫的业务，也将两套电商的业务做了梳理和沉淀，将两个平台中公共的、通用的业务功能沉淀到了共享业务事业部，避免有些功能的重复建设和维护，更合理的利用技术资源。</p><p>但是共享业务事业部的发展事与愿违，在两大业务部门的业务需求下艰难的生存。</p><p><strong>2010年</strong>，聚划算的出现，展现了它强大的流量吸引的威力，据不完全统计，不管是淘宝还是天猫商品，一旦进入聚划算平台，销售额会在短时间内至少增长25倍，随后大家纷纷对接聚划算平台，1688也参与其中，洪流般的业务对接需求让当时成立不久的聚划算团队应接不暇。</p><p>随后集团要求三大电商平台与聚划算平台进行业务对接，必须通过共享业务事业部。</p><p>阿里巴巴“厚平台、薄应用”架构形态逐渐清晰。</p><p>前端业务中公共、通用的业务也沉淀到了这个事业部，包含了用户中心、商品中心、交易中心等。</p><p><strong>2015年</strong>，阿里巴巴带领</p><h1 id="什么是中台"><a href="#什么是中台" class="headerlink" title="什么是中台"></a>什么是中台</h1><h1 id="为什么需要中台"><a href="#为什么需要中台" class="headerlink" title="为什么需要中台"></a>为什么需要中台</h1><h1 id="中台的分类"><a href="#中台的分类" class="headerlink" title="中台的分类"></a>中台的分类</h1>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> 中台 </tag>
             
         </tags>
       
@@ -470,19 +463,6 @@
     
     
     <entry>
-      <title>Hello World</title>
-      <link href="/2022/01/06/hello-world/"/>
-      <url>/2022/01/06/hello-world/</url>
-      
-        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>prometheus监控之node各项指标</title>
       <link href="/2022/01/06/prometheus%E7%9B%91%E6%8E%A7%E4%B9%8Bnode%E5%90%84%E9%A1%B9%E6%8C%87%E6%A0%87/"/>
       <url>/2022/01/06/prometheus%E7%9B%91%E6%8E%A7%E4%B9%8Bnode%E5%90%84%E9%A1%B9%E6%8C%87%E6%A0%87/</url>
@@ -515,25 +495,6 @@
       <url>/2022/01/06/img-test/</url>
       
         <content type="html"><![CDATA[<p>用于测试图片是否可以正常展示</p><img src="/2022/01/06/img-test/image-20220106104706904.png" class="" title="This is an image"><p>操作步骤：</p><ol><li>在_config.yml 中修改如下配置为 true<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure></li><li>文章中使用图片</li></ol><ul><li>第一种可以使用，makedown的格式  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![image-20220106105728993](image-20220106105728993.png)</span><br></pre></td></tr></table></figure></li><li>第二种 使用如下方式  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% asset_img image-20220106104706904.png This is an image %&#125;</span><br></pre></td></tr></table></figure></li></ul><blockquote><p>注意：其中的 image-20220106104706904.png 为需要展示的图片名称，该图片会放在与当前博客同名的目录下面</p></blockquote>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> test </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>新的第一篇博客</title>
-      <link href="/2022/01/06/my-first-blog/"/>
-      <url>/2022/01/06/my-first-blog/</url>
-      
-        <content type="html"><![CDATA[<h1 id="开始新的博客"><a href="#开始新的博客" class="headerlink" title="开始新的博客"></a>开始新的博客</h1><p>这里使用github+hexo搭建了自己的博客，参考了如下的博客文章：<br>[GitHub Pages + Hexo搭建个人博客网站，史上最全教程] <a href="https://blog.csdn.net/yaorongke/article/details/119089190">https://blog.csdn.net/yaorongke/article/details/119089190</a></p><h1 id="hexo操作"><a href="#hexo操作" class="headerlink" title="hexo操作"></a>hexo操作</h1><ol><li>创建新博客文档<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &#x27;博客文章标题&#x27;</span><br></pre></td></tr></table></figure></li><li>生成html文件<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure></li><li>发布到github<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure></li><li>启动本地<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure></li></ol><h1 id="在不同机器上更新博客"><a href="#在不同机器上更新博客" class="headerlink" title="在不同机器上更新博客"></a>在不同机器上更新博客</h1><ol><li><p>在新机器上安装npm</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># 这里根据不同的系统进行安装</span><br></pre></td></tr></table></figure></li><li><p>安装hexo</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure></li><li><p>拉取github上面的项目</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:xxxxx/xxx.git</span><br></pre></td></tr></table></figure></li></ol><p>然后即可在博客的根目录下使用hexo进行操作</p>]]></content>
       
       
       
