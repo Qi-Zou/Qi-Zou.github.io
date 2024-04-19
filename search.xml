@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>每日BUG</title>
+      <link href="/2024/04/19/%E6%AF%8F%E6%97%A5BUG/"/>
+      <url>/2024/04/19/%E6%AF%8F%E6%97%A5BUG/</url>
+      
+        <content type="html"><![CDATA[<p>这是一篇测试的文章</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>部署prometheus</title>
       <link href="/2022/02/09/%E9%83%A8%E7%BD%B2prometheus/"/>
       <url>/2022/02/09/%E9%83%A8%E7%BD%B2prometheus/</url>
@@ -294,9 +307,9 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
+            
+            <tag> prometheus </tag>
             
             <tag> exporter </tag>
             
@@ -411,13 +424,13 @@
       
         <tags>
             
-            <tag> prometheus </tag>
+            <tag> bind-exporter </tag>
             
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
             
-            <tag> bind-exporter </tag>
+            <tag> prometheus </tag>
             
         </tags>
       
@@ -442,13 +455,13 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
             
-            <tag> elasticsearch-exporter </tag>
-            
             <tag> 云计算 </tag>
+            
+            <tag> prometheus </tag>
+            
+            <tag> elasticsearch-exporter </tag>
             
         </tags>
       
@@ -551,11 +564,11 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
+            
+            <tag> prometheus </tag>
             
         </tags>
       
@@ -599,9 +612,9 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
+            
+            <tag> prometheus </tag>
             
         </tags>
       
