@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>史上最便宜的个人博客网站</title>
+      <link href="/2024/07/09/%E5%8F%B2%E4%B8%8A%E6%9C%80%E4%BE%BF%E5%AE%9C%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/"/>
+      <url>/2024/07/09/%E5%8F%B2%E4%B8%8A%E6%9C%80%E4%BE%BF%E5%AE%9C%E7%9A%84%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/</url>
+      
+        <content type="html"><![CDATA[<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>为什么说这是史上最便宜的个人博客网站呢，因为它就是免费的，通过使用hexo可以在本地搭建个人博客，然后通过github pages进行部署，不需要购买服务器，不需要购买域名，不需要购买数据库，只需要一台电脑就可以完成个人博客的搭建，而且还可以通过github进行版本控制，方便以后进行博客的更新和维护。</p><p>但是！！！</p><p>你需要在一个固定的电脑上，搭建hexo、git等等一系列的环境，才能开始写你的博客，一旦脱离了这个电脑，你就无法在这个博客网站上写博文了，虽然我讲构建博客的代码一起放在github的另外仓库进行托管，但是我换电脑，就需要在新电脑上安装必要的环境，才能继续使用，这个安装太过于繁琐，因此我的博文已经很久没有更新了</p><p>但是！！！</p><p>最近发现了一个平台</p><p>就是这个： <a href="https://docs.marscode.cn/introduction#%E8%B1%86%E5%8C%85-marscode-ide">MarsCode IDE</a></p><p>是它让我可以重新使用自己的博客：<a href="https://qi-zou.github.io/">https://qi-zou.github.io/</a></p><p>为什么说它拯救了我的博客网站呢，下面我就介绍一下我的操作流程：</p><h1 id="操作流程"><a href="#操作流程" class="headerlink" title="操作流程"></a>操作流程</h1><ol><li><p>首先进入 <a href="https://www.marscode.cn/dashboard">豆包IDE工作台</a>，正常注册登录就行</p></li><li><p>创建项目，选择从github上导入你的项目，这里我直接选择我的博客网站源代码仓库：<br><img src="image2.png" alt="alt text"></p></li><li><p>创建完成后，就可以直接进入到你的项目了，在这里你可以看到一个类似于VSCode在线编辑器，相当于提供了一个免费的在线服务器给你<br><img src="image3.png" alt="alt text"></p></li><li><p>后面就可以按照hexo的教程，去创建文档，写博客，发布，然后就会看到你的博客更新了</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new &quot;博客文章&quot;</span><br></pre></td></tr></table></figure><p><img src="image4.png" alt="alt text"></p></li></ol><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 清理</span><br><span class="line">hexo clean</span><br><span class="line"></span><br><span class="line"># 生成</span><br><span class="line">hexo generate</span><br><span class="line"></span><br><span class="line"># 本地运行</span><br><span class="line">hexo s</span><br><span class="line"></span><br><span class="line"># 发布</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure><ol start="5"><li>然后就可以通过访问你的博客网站，查看你的博客了，是不是很方便呢<br><img src="image5.png" alt="alt text"></li></ol><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过使用MarsCode IDE，我重新使用了自己的博客网站，而且不需要在本地搭建环境，只需要一个浏览器就可以开始写博客了，而且还可以通过github进行版本控制，方便以后进行博客的更新和维护，希望这个平台能够帮助到更多的人，让更多的人能够使用自己的博客网站。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 博客搭建 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>python代码创建dify知识库</title>
       <link href="/2024/07/08/python%E4%BB%A3%E7%A0%81%E5%88%9B%E5%BB%BAdify%E7%9F%A5%E8%AF%86%E5%BA%93/"/>
       <url>/2024/07/08/python%E4%BB%A3%E7%A0%81%E5%88%9B%E5%BB%BAdify%E7%9F%A5%E8%AF%86%E5%BA%93/</url>
