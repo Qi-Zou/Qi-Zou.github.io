@@ -4,25 +4,38 @@
   
     
     <entry>
-      <title>1234123</title>
-      <link href="/2024/07/13/1234123/"/>
-      <url>/2024/07/13/1234123/</url>
+      <title>123请问</title>
+      <link href="/2024/07/13/123%E8%AF%B7%E9%97%AE/"/>
+      <url>/2024/07/13/123%E8%AF%B7%E9%97%AE/</url>
       
-        <content type="html"><![CDATA[<h1 id="达人相似度数据"><a href="#达人相似度数据" class="headerlink" title="达人相似度数据"></a>达人相似度数据</h1><h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>根据达人的粉丝画像，匹配相似的达人，便于筛选潜在的合作达人，实现如下两种方案</p><ol><li>按已合作过的达人推荐</li><li>按品牌进行推荐</li></ol><h1 id="表结构设计"><a href="#表结构设计" class="headerlink" title="表结构设计"></a>表结构设计</h1><h2 id="达人相似度关系（common-blogger-similar-relation）"><a href="#达人相似度关系（common-blogger-similar-relation）" class="headerlink" title="达人相似度关系（common_blogger_similar_relation）"></a>达人相似度关系（common_blogger_similar_relation）</h2><table><thead><tr><th>字段</th><th>类型</th><th>字段说明</th><th>是否允许为空</th><th>备注</th><th>约束</th></tr></thead><tbody><tr><td>id</td><td>varchar(64)</td><td>ID</td><td>不允许</td><td>ID</td><td>主键</td></tr><tr><td>blogger_uid</td><td>varchar(64)</td><td>已合作达人 UID</td><td>不允许</td><td>已合作达人 UID</td><td>联合唯一键</td></tr><tr><td>similar_blogger_uid</td><td>varchar(64)</td><td>相似达人 UID</td><td>不允许</td><td>相似达人 UID</td><td></td></tr><tr><td>similar_value</td><td>decimal(10,2)</td><td>他们之间的相似度</td><td>不允许</td><td>他们之间的相似度</td><td></td></tr><tr><td>create_date</td><td>datetime</td><td>创建时间</td><td>允许</td><td>创建时间</td><td></td></tr></tbody></table><h1 id="接口设计"><a href="#接口设计" class="headerlink" title="接口设计"></a>接口设计</h1><ol><li>根据已合作的达人 UID 列表，获取相似度 TOP N 个的相似达人 UID</li></ol><ul><li><p>接口：getSimilarBloggerTop</p></li><li><p>参数：</p><ul><li>已合作达人 UID 列表</li><li>TOP N</li></ul></li><li><p>返回值:</p><ul><li>相似达人 UID 列表</li></ul></li></ul><p><img src="/cloudide/workspace/MyBlogRepository/MyBlogRepository/hexo-blog/source/_posts/Be8Jw5h58ivXjck85emc6xdjnpb/static/RBRub1b9So0mBnxvczhcFWKVned.png"></p><h2 id=""><a href="#" class="headerlink" title=""></a></h2>]]></content>
+        <content type="html"><![CDATA[<h1 id="达人相似度数据"><a href="#达人相似度数据" class="headerlink" title="达人相似度数据"></a>达人相似度数据</h1><h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>根据达人的粉丝画像，匹配相似的达人，便于筛选潜在的合作达人，实现如下两种方案</p><ol><li>按已合作过的达人推荐</li><li>按品牌进行推荐</li></ol><h1 id="表结构设计"><a href="#表结构设计" class="headerlink" title="表结构设计"></a>表结构设计</h1><h2 id="达人相似度关系（common-blogger-similar-relation）"><a href="#达人相似度关系（common-blogger-similar-relation）" class="headerlink" title="达人相似度关系（common_blogger_similar_relation）"></a>达人相似度关系（common_blogger_similar_relation）</h2><table><thead><tr><th>字段</th><th>类型</th><th>字段说明</th><th>是否允许为空</th><th>备注</th><th>约束</th></tr></thead><tbody><tr><td>id</td><td>varchar(64)</td><td>ID</td><td>不允许</td><td>ID</td><td>主键</td></tr><tr><td>blogger_uid</td><td>varchar(64)</td><td>已合作达人 UID</td><td>不允许</td><td>已合作达人 UID</td><td>联合唯一键</td></tr><tr><td>similar_blogger_uid</td><td>varchar(64)</td><td>相似达人 UID</td><td>不允许</td><td>相似达人 UID</td><td></td></tr><tr><td>similar_value</td><td>decimal(10,2)</td><td>他们之间的相似度</td><td>不允许</td><td>他们之间的相似度</td><td></td></tr><tr><td>create_date</td><td>datetime</td><td>创建时间</td><td>允许</td><td>创建时间</td><td></td></tr></tbody></table><h1 id="接口设计"><a href="#接口设计" class="headerlink" title="接口设计"></a>接口设计</h1><ol><li>根据已合作的达人 UID 列表，获取相似度 TOP N 个的相似达人 UID</li></ol><ul><li><p>接口：getSimilarBloggerTop</p></li><li><p>参数：</p><ul><li>已合作达人 UID 列表</li><li>TOP N</li></ul></li><li><p>返回值:</p><ul><li>相似达人 UID 列表</li></ul></li></ul><p><img src="RBRub1b9So0mBnxvczhcFWKVned.png">)</p><h2 id=""><a href="#" class="headerlink" title=""></a></h2>]]></content>
       
       
       <categories>
           
-          <category> 12345123 </category>
+          <category> 123请问 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 1234123 </tag>
+            <tag> 123请问 </tag>
             
         </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="/2024/07/13/%E6%98%AF%E6%98%AF%E6%98%AF/"/>
+      <url>/2024/07/13/%E6%98%AF%E6%98%AF%E6%98%AF/</url>
+      
+        <content type="html"><![CDATA[<h1 id="达人相似度数据"><a href="#达人相似度数据" class="headerlink" title="达人相似度数据"></a>达人相似度数据</h1><h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>根据达人的粉丝画像，匹配相似的达人，便于筛选潜在的合作达人，实现如下两种方案</p><ol><li>按已合作过的达人推荐</li><li>按品牌进行推荐</li></ol><h1 id="表结构设计"><a href="#表结构设计" class="headerlink" title="表结构设计"></a>表结构设计</h1><h2 id="达人相似度关系（common-blogger-similar-relation）"><a href="#达人相似度关系（common-blogger-similar-relation）" class="headerlink" title="达人相似度关系（common_blogger_similar_relation）"></a>达人相似度关系（common_blogger_similar_relation）</h2><table><thead><tr><th>字段</th><th>类型</th><th>字段说明</th><th>是否允许为空</th><th>备注</th><th>约束</th></tr></thead><tbody><tr><td>id</td><td>varchar(64)</td><td>ID</td><td>不允许</td><td>ID</td><td>主键</td></tr><tr><td>blogger_uid</td><td>varchar(64)</td><td>已合作达人 UID</td><td>不允许</td><td>已合作达人 UID</td><td>联合唯一键</td></tr><tr><td>similar_blogger_uid</td><td>varchar(64)</td><td>相似达人 UID</td><td>不允许</td><td>相似达人 UID</td><td></td></tr><tr><td>similar_value</td><td>decimal(10,2)</td><td>他们之间的相似度</td><td>不允许</td><td>他们之间的相似度</td><td></td></tr><tr><td>create_date</td><td>datetime</td><td>创建时间</td><td>允许</td><td>创建时间</td><td></td></tr></tbody></table><h1 id="接口设计"><a href="#接口设计" class="headerlink" title="接口设计"></a>接口设计</h1><ol><li>根据已合作的达人 UID 列表，获取相似度 TOP N 个的相似达人 UID</li></ol><ul><li><p>接口：getSimilarBloggerTop</p></li><li><p>参数：</p><ul><li>已合作达人 UID 列表</li><li>TOP N</li></ul></li><li><p>返回值:</p><ul><li>相似达人 UID 列表</li></ul></li></ul><p><img src="/cloudide/workspace/MyBlogRepository/MyBlogRepository/hexo-blog/source/_posts/Be8Jw5h58ivXjck85emc6xdjnpb/static/RBRub1b9So0mBnxvczhcFWKVned.png"></p><h2 id=""><a href="#" class="headerlink" title=""></a></h2>]]></content>
+      
+      
       
     </entry>
     
