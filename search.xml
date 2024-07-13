@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>利用Python将飞书文档转成博客</title>
+      <link href="/2024/07/13/%E5%88%A9%E7%94%A8Python%E5%B0%86%E9%A3%9E%E4%B9%A6%E6%96%87%E6%A1%A3%E8%BD%AC%E6%88%90%E5%8D%9A%E5%AE%A2/"/>
+      <url>/2024/07/13/%E5%88%A9%E7%94%A8Python%E5%B0%86%E9%A3%9E%E4%B9%A6%E6%96%87%E6%A1%A3%E8%BD%AC%E6%88%90%E5%8D%9A%E5%AE%A2/</url>
+      
+        <content type="html"><![CDATA[<h1 id="利用-Python-将飞书文档转成博客"><a href="#利用-Python-将飞书文档转成博客" class="headerlink" title="利用 Python 将飞书文档转成博客"></a>利用 Python 将飞书文档转成博客</h1><h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>由于个人平常用飞书文档比较多，而且飞书写文档确实也挺方便， 如果能将飞书的文档直接转换为我的博客文档，那写文档就方便多了，因此我利用 python 中 streamlit，实现了可视化将飞书文档转换为博客文档</p><h1 id="展示效果"><a href="#展示效果" class="headerlink" title="展示效果"></a>展示效果</h1><h2 id="启动项目"><a href="#启动项目" class="headerlink" title="启动项目"></a>启动项目</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">streamlit run feishu2blog.py</span><br></pre></td></tr></table></figure><p><img src="PkAPbgx8RoIgZkxhgwjcgm3bn5c.png">)</p><h2 id="界面展示"><a href="#界面展示" class="headerlink" title="界面展示"></a>界面展示</h2><ol><li>由于需要读取飞书文档，因此需要使用飞书应用进行读取，飞书应用的创建可以参考官方文档</li></ol><p><img src="XduPbOJT0oYBAtxAiLocsJY7nxc.png">)</p><ol><li>填写好飞书应用的 appId 和 appSecret 后就会出现如下的界面</li></ol><p><img src="SgiYbj4iyoViRYxspBWcMcfanrb.png">)</p><ol><li>根据点击 “生成并发布”</li></ol><p><img src="J9f2bxZJWoJuVwxva1mcyKIsnDd.png">)</p><ol><li>完成发布之后，就可以在个人的博客网站上查看到了</li></ol>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>123请问</title>
       <link href="/2024/07/13/123%E8%AF%B7%E9%97%AE/"/>
       <url>/2024/07/13/123%E8%AF%B7%E9%97%AE/</url>
