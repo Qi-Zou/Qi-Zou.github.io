@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>IDEA异常退出导致项目启动报端口被占用</title>
+      <link href="/2024/09/27/IDEA%E5%BC%82%E5%B8%B8%E9%80%80%E5%87%BA%E5%AF%BC%E8%87%B4%E9%A1%B9%E7%9B%AE%E5%90%AF%E5%8A%A8%E6%8A%A5%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8/"/>
+      <url>/2024/09/27/IDEA%E5%BC%82%E5%B8%B8%E9%80%80%E5%87%BA%E5%AF%BC%E8%87%B4%E9%A1%B9%E7%9B%AE%E5%90%AF%E5%8A%A8%E6%8A%A5%E7%AB%AF%E5%8F%A3%E8%A2%AB%E5%8D%A0%E7%94%A8/</url>
+      
+        <content type="html"><![CDATA[<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>IDEA异常退出导致项目启动报端口被占用</p><h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><ol><li>打开终端</li><li>查询占用端口的进程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ano | findstr &quot;:&lt;port&gt;&quot;</span><br></pre></td></tr></table></figure></li><li>杀死进程<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">taskkill /pid &lt;pid&gt; /f</span><br></pre></td></tr></table></figure></li><li>重新启动项目</li></ol>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>文本转pdf</title>
       <link href="/2024/09/26/%E6%96%87%E6%9C%AC%E8%BD%ACpdf/"/>
       <url>/2024/09/26/%E6%96%87%E6%9C%AC%E8%BD%ACpdf/</url>
