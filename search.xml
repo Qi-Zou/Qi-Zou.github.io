@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>python调用本地ollama部署的模型</title>
+      <link href="/2024/11/12/python%E8%B0%83%E7%94%A8%E6%9C%AC%E5%9C%B0ollama%E9%83%A8%E7%BD%B2%E7%9A%84%E6%A8%A1%E5%9E%8B/"/>
+      <url>/2024/11/12/python%E8%B0%83%E7%94%A8%E6%9C%AC%E5%9C%B0ollama%E9%83%A8%E7%BD%B2%E7%9A%84%E6%A8%A1%E5%9E%8B/</url>
+      
+        <content type="html"><![CDATA[<h2 id="使用langchain调用ollama部署的模型"><a href="#使用langchain调用ollama部署的模型" class="headerlink" title="使用langchain调用ollama部署的模型"></a>使用langchain调用ollama部署的模型</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_community.llms <span class="keyword">import</span> ollama</span><br><span class="line">host = <span class="string">&quot;127.0.0.1&quot;</span></span><br><span class="line">port = <span class="string">&quot;11434&quot;</span></span><br><span class="line">URL_ADDRESS = <span class="string">f&quot;http://<span class="subst">&#123;host&#125;</span>:<span class="subst">&#123;port&#125;</span>&quot;</span></span><br><span class="line">model = <span class="string">&quot;qwen2.5&quot;</span></span><br><span class="line">llm = ollama.Ollama(model=model, base_url=URL_ADDRESS, temperature=<span class="number">0</span>)</span><br><span class="line">res = llm.invoke(message)</span><br><span class="line"><span class="built_in">print</span>(res)</span><br></pre></td></tr></table></figure><h2 id="使用requests调用ollama部署的模型"><a href="#使用requests调用ollama部署的模型" class="headerlink" title="使用requests调用ollama部署的模型"></a>使用requests调用ollama部署的模型</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">host = <span class="string">&quot;127.0.0.1&quot;</span></span><br><span class="line">port = <span class="string">&quot;11434&quot;</span></span><br><span class="line">url = <span class="string">f&quot;http://<span class="subst">&#123;host&#125;</span>:<span class="subst">&#123;port&#125;</span>/api/chat&quot;</span></span><br><span class="line">model = <span class="string">&quot;qwen2.5&quot;</span></span><br><span class="line">headers = &#123;<span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/json&quot;</span>&#125;</span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&quot;model&quot;</span>:model,<span class="comment">#模型选择</span></span><br><span class="line">    <span class="string">&quot;options&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;temperature&quot;</span>:<span class="number">0.</span><span class="comment">#为0表示不让模型自由发挥,输出结果相对较固定,&gt;0的话,输出的结果会比较放飞自我</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;stream&quot;</span>:<span class="literal">False</span>,<span class="comment">#流式输出</span></span><br><span class="line">    <span class="string">&quot;messages&quot;</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">&quot;role&quot;</span>: <span class="string">&quot;system&quot;</span>,</span><br><span class="line">            <span class="string">&quot;content&quot;</span>:<span class="string">&quot;你是谁?&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]<span class="comment">#对话列表</span></span><br><span class="line">&#125;</span><br><span class="line">response=requests.post(url,json=data,headers=headers,timeout=<span class="number">60</span>)</span><br><span class="line">res=response.json()</span><br><span class="line"><span class="built_in">print</span>(res)</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>IDEA中无法打开终端</title>
       <link href="/2024/10/08/IDEA%E4%B8%AD%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E7%BB%88%E7%AB%AF/"/>
       <url>/2024/10/08/IDEA%E4%B8%AD%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80%E7%BB%88%E7%AB%AF/</url>
