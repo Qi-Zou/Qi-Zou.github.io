@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>局域网访问wsl上的服务</title>
+      <link href="/2025/02/18/%E5%B1%80%E5%9F%9F%E7%BD%91%E8%AE%BF%E9%97%AEwsl%E4%B8%8A%E7%9A%84%E6%9C%8D%E5%8A%A1/"/>
+      <url>/2025/02/18/%E5%B1%80%E5%9F%9F%E7%BD%91%E8%AE%BF%E9%97%AEwsl%E4%B8%8A%E7%9A%84%E6%9C%8D%E5%8A%A1/</url>
+      
+        <content type="html"><![CDATA[<h1 id="局域网访问-wsl-上的服务"><a href="#局域网访问-wsl-上的服务" class="headerlink" title="局域网访问 wsl 上的服务"></a>局域网访问 wsl 上的服务</h1><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在 windows 的子系统（ubuntu）中启动了一个服务，但是在 windows 上可以使用 localhost 进行访问，但是没办法通过 windows 的 ip 进行访问，</p><p>例如：</p><p>windows 的 ip 为：172.19.2.xxx</p><p>wsl 上的 ip 为：172.29.131.8</p><p>在 wsl 上启动的服务端口为：9090 我在 windows 上使用 172.19.2.xxx:9090 无法访问，</p><p>但是可以使用：<a href="http://localhost:9090/">http://localhost:9090/</a> 和 <a href="http://172.29.131.8:9090/">http://172.29.131.8/</a> 进行访问，</p><p>在局域网的其他电脑不能使用 <a href="http://172.29.131.8:9090/">http://172.29.131.8/</a> 进行访问，也不能使用 <a href="http://172.19.2.xxx:9090/">http://172.19.2.xxx:9090</a> 访问</p><p>如果我是在 windows 上启动这个服务，就可以使用 <a href="http://172.19.2.xxx:9090/">http://172.19.2.xxx:9090</a> 访问，并且局域网也能使用 <a href="http://172.19.2.xxx:9090/">http://172.19.2.xxx:9090</a> 访问</p><h1 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h1><p>如何在宿主机 window 上或局域网其他电脑，使用 <a href="http://172.19.2.xxx:9090/">http://172.19.2.xxx:9090</a> 访问我 wsl 上启动的服务</p><h1 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h1><p>为了在宿主机 Windows 或局域网其他电脑通过 <a href="http://172.19.2.xxx:9090/">http://172.19.2.xxx:9090</a> 访问 WSL 中的服务，需解决 WSL2 网络隔离和防火墙规则问题。以下是具体步骤：</p><h3 id="1-确保服务绑定到-0-0-0-0"><a href="#1-确保服务绑定到-0-0-0-0" class="headerlink" title="1. 确保服务绑定到 0.0.0.0"></a>1. 确保服务绑定到 <code>0.0.0.0</code></h3><p>在 WSL 的 Ubuntu 中，确认服务监听的地址是 <code>0.0.0.0</code>（所有接口），而非 <code>127.0.0.1</code>（仅本地）。</p><p>检查命令（以 Python 服务为例）：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -tuln | grep 9090</span><br></pre></td></tr></table></figure><p>若输出显示 <code>0.0.0.0:9090</code> 或 <code>:::9090</code>（IPv6），则已正确绑定。否则需调整服务配置。</p><h3 id="2-配置-Windows-防火墙允许入站"><a href="#2-配置-Windows-防火墙允许入站" class="headerlink" title="2. 配置 Windows 防火墙允许入站"></a>2. 配置 Windows 防火墙允许入站</h3><p>允许外部访问 Windows 的 9090 端口：</p><ol><li>打开 Windows Defender 防火墙 → 高级设置 → 入站规则 → 新建规则。</li><li>选择 端口 → TCP → 特定端口 <code>9090</code> → 允许连接 → 应用所有网络类型。</li><li>命名规则（如 <code>WSL 9090</code>）并完成。</li></ol><h3 id="3-设置端口转发（关键步骤）"><a href="#3-设置端口转发（关键步骤）" class="headerlink" title="3. 设置端口转发（关键步骤）"></a>3. 设置端口转发（关键步骤）</h3><p>由于 WSL2 使用虚拟网络，需将 Windows 的端口流量转发到 WSL：</p><p>以管理员身份运行 PowerShell，执行以下命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 添加端口转发规则（替换为你的WSL IP）_</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">$</span><span class="bash">wsl_ip = <span class="string">&quot;172.29.131.8&quot;</span></span></span><br><span class="line"></span><br><span class="line">netsh interface portproxy add v4tov4 listenport=9090 listenaddress=0.0.0.0 connectport=9090 connectaddress=$wsl_ip</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 验证规则_</span></span><br><span class="line"></span><br><span class="line">netsh interface portproxy show all</span><br></pre></td></tr></table></figure><p>说明：</p><ul><li><code>listenaddress=0.0.0.0</code> 允许所有外部 IP 访问。</li><li>如果 WSL IP 重启后变化，需更新转发规则（见下文 自动化脚本）。</li></ul><p><img src="Wyxzb3gUvo88Muxk5lWcW6iGnzb.png"></p><h3 id="4-允许-Hyper-V-虚拟交换机通过防火墙（可选）"><a href="#4-允许-Hyper-V-虚拟交换机通过防火墙（可选）" class="headerlink" title="4. 允许 Hyper-V 虚拟交换机通过防火墙（可选）"></a>4. 允许 Hyper-V 虚拟交换机通过防火墙（可选）</h3><p>如果仍无法访问，可能需要允许 Hyper-V 虚拟交换机的防火墙规则：</p><ol><li>打开 控制面板 → 系统和安全 → Windows Defender 防火墙 → 允许应用通过防火墙。</li><li>找到 Hyper-V Management 并勾选 专用 和 公用。</li></ol><h3 id="5-测试访问"><a href="#5-测试访问" class="headerlink" title="5. 测试访问"></a>5. 测试访问</h3><ol><li>宿主机 Windows：访问  <a href="http://172.19.2.xxx:9090/">http://172.19.2.xxx:9090</a></li><li>局域网设备：使用 <code>http://[Windows主机的IP]:9090</code> 访问。</li></ol><h3 id="自动化脚本（应对-WSL-IP-变化）"><a href="#自动化脚本（应对-WSL-IP-变化）" class="headerlink" title="自动化脚本（应对 WSL IP 变化）"></a>自动化脚本（应对 WSL IP 变化）</h3><p>创建 PowerShell 脚本 <code>wsl_port_forward.ps1</code>，内容如下：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 获取WSL2的IP地址_</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">$</span><span class="bash">wsl_ip = (wsl hostname -I).trim().split()[0]</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除旧规则_</span></span><br><span class="line"></span><br><span class="line">netsh interface portproxy delete v4tov4 listenport=9090 listenaddress=0.0.0.0</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加新规则_</span></span><br><span class="line"></span><br><span class="line">netsh interface portproxy add v4tov4 listenport=9090 listenaddress=0.0.0.0 connectport=9090 connectaddress=$wsl_ip</span><br></pre></td></tr></table></figure><p>每次 WSL 重启后以管理员身份运行此脚本。</p><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul><li>服务绑定：确保服务监听 <code>0.0.0.0:9090</code>。</li><li>防火墙：允许 Windows 的 9090 端口入站。</li><li>端口转发：使用 <code>netsh</code> 将 Windows 端口转发到 WSL。</li><li>IP 变化处理：通过脚本动态更新转发规则。</li></ul><p>完成以上步骤后，局域网设备即可通过 <a href="http://172.19.2.xxx:9090/">http://172.19.2.xxx:9090</a> 访问 WSL 服务。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>本地部署视频转文字模型</title>
       <link href="/2025/02/18/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E8%A7%86%E9%A2%91%E8%BD%AC%E6%96%87%E5%AD%97%E6%A8%A1%E5%9E%8B/"/>
       <url>/2025/02/18/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E8%A7%86%E9%A2%91%E8%BD%AC%E6%96%87%E5%AD%97%E6%A8%A1%E5%9E%8B/</url>
@@ -625,9 +638,9 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
+            
+            <tag> prometheus </tag>
             
             <tag> exporter </tag>
             
@@ -742,13 +755,13 @@
       
         <tags>
             
-            <tag> prometheus </tag>
+            <tag> bind-exporter </tag>
             
             <tag> 云监控 </tag>
             
-            <tag> bind-exporter </tag>
-            
             <tag> 云计算 </tag>
+            
+            <tag> prometheus </tag>
             
         </tags>
       
@@ -773,11 +786,11 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
+            
+            <tag> prometheus </tag>
             
             <tag> elasticsearch-exporter </tag>
             
@@ -869,11 +882,11 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
             
             <tag> 云计算 </tag>
+            
+            <tag> prometheus </tag>
             
         </tags>
       
@@ -917,9 +930,9 @@
       
         <tags>
             
-            <tag> prometheus </tag>
-            
             <tag> 云监控 </tag>
+            
+            <tag> prometheus </tag>
             
         </tags>
       
