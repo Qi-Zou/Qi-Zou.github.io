@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>使用LangGraph构建智能聊天机器人技术解析 | 牛蛙JUN</title><meta name="keywords" content="LangGraph"><meta name="author" content="牛蛙JUN"><meta name="copyright" content="牛蛙JUN"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="🚀 使用LangGraph构建智能聊天机器人技术解析  本文将带您逐步实现一个具备多模态能力的智能聊天机器人，涵盖状态管理、工具调用、持久化记忆和人机协作等核心功能。以下是完整技术方案解析：  📚 目录 架构概述 环境配置 基础对话实现 增强搜索能力  记忆持久化 人工审核机制 状态热更新 部署建议   🏗️ 架构概述  本系统实现以下核心能力：  ✅ 多轮次对话状态管理 ✅ 实时网络搜索集">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用LangGraph构建智能聊天机器人技术解析">
+<meta property="og:url" content="http://qi-zou.github.io/2025/03/25/%E4%BD%BF%E7%94%A8LangGraph%E6%9E%84%E5%BB%BA%E6%99%BA%E8%83%BD%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="牛蛙JUN">
+<meta property="og:description" content="🚀 使用LangGraph构建智能聊天机器人技术解析  本文将带您逐步实现一个具备多模态能力的智能聊天机器人，涵盖状态管理、工具调用、持久化记忆和人机协作等核心功能。以下是完整技术方案解析：  📚 目录 架构概述 环境配置 基础对话实现 增强搜索能力  记忆持久化 人工审核机制 状态热更新 部署建议   🏗️ 架构概述  本系统实现以下核心能力：  ✅ 多轮次对话状态管理 ✅ 实时网络搜索集">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg">
+<meta property="article:published_time" content="2025-03-25T14:21:36.000Z">
+<meta property="article:modified_time" content="2025-03-25T14:22:04.300Z">
+<meta property="article:author" content="牛蛙JUN">
+<meta property="article:tag" content="LangGraph">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg"><link rel="shortcut icon" href="https://s2.loli.net/2022/01/10/cqBXSH6kytINKGU.png"><link rel="canonical" href="http://qi-zou.github.io/2025/03/25/%E4%BD%BF%E7%94%A8LangGraph%E6%9E%84%E5%BB%BA%E6%99%BA%E8%83%BD%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '使用LangGraph构建智能聊天机器人技术解析',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-03-25 14:22:04'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/10/cqBXSH6kytINKGU.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">47</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">45</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友联</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">牛蛙JUN</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友联</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">使用LangGraph构建智能聊天机器人技术解析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-25T14:21:36.000Z" title="发表于 2025-03-25 14:21:36">2025-03-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-25T14:22:04.300Z" title="更新于 2025-03-25 14:22:04">2025-03-25</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="使用LangGraph构建智能聊天机器人技术解析"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="🚀-使用LangGraph构建智能聊天机器人技术解析"><a href="#🚀-使用LangGraph构建智能聊天机器人技术解析" class="headerlink" title="🚀 使用LangGraph构建智能聊天机器人技术解析"></a>🚀 使用LangGraph构建智能聊天机器人技术解析</h1><p><img src="https://example.com/banner.jpg" alt="LangGraph Banner"> <!-- 可替换为实际图片链接 --></p>
+<p>本文将带您逐步实现一个具备多模态能力的智能聊天机器人，涵盖<strong>状态管理</strong>、<strong>工具调用</strong>、<strong>持久化记忆</strong>和<strong>人机协作</strong>等核心功能。以下是完整技术方案解析：</p>
+<hr>
+<h2 id="📚-目录"><a href="#📚-目录" class="headerlink" title="📚 目录"></a>📚 目录</h2><ol>
+<li><a href="#-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0">架构概述</a></li>
+<li><a href="#%EF%B8%8F-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">环境配置</a></li>
+<li><a href="#-%E5%9F%BA%E7%A1%80%E5%AF%B9%E8%AF%9D%E5%AE%9E%E7%8E%B0">基础对话实现</a></li>
+<li><a href="#-%E5%A2%9E%E5%BC%BA%E6%90%9C%E7%B4%A2%E8%83%BD%E5%8A%9B">增强搜索能力</a> </li>
+<li><a href="#-%E8%AE%B0%E5%BF%86%E6%8C%81%E4%B9%85%E5%8C%96">记忆持久化</a></li>
+<li><a href="#-%E4%BA%BA%E5%B7%A5%E5%AE%A1%E6%A0%B8%E6%9C%BA%E5%88%B6">人工审核机制</a></li>
+<li><a href="#-%E7%8A%B6%E6%80%81%E7%83%AD%E6%9B%B4%E6%96%B0">状态热更新</a></li>
+<li><a href="#-%E9%83%A8%E7%BD%B2%E5%BB%BA%E8%AE%AE">部署建议</a></li>
+</ol>
+<hr>
+<h2 id="🏗️-架构概述"><a href="#🏗️-架构概述" class="headerlink" title="🏗️ 架构概述"></a>🏗️ 架构概述</h2><p><img src="https://example.com/architecture.png" alt="系统架构图"> <!-- 可替换为实际架构图 --></p>
+<p>本系统实现以下核心能力：</p>
+<ul>
+<li>✅ 多轮次对话状态管理</li>
+<li>✅ 实时网络搜索集成</li>
+<li>✅ 对话历史持久化</li>
+<li>✅ 人工审核介入机制</li>
+<li>✅ 运行时状态热更新</li>
+</ul>
+<hr>
+<h2 id="⚙️-环境配置"><a href="#⚙️-环境配置" class="headerlink" title="⚙️ 环境配置"></a>⚙️ 环境配置</h2><h3 id="依赖安装"><a href="#依赖安装" class="headerlink" title="依赖安装"></a>依赖安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">%%capture --no-stderr</span><br><span class="line">%pip install -U langgraph langsmith</span><br><span class="line">%pip install -U langchain_anthropic</span><br><span class="line">%pip install -U tavily-python</span><br></pre></td></tr></table></figure>
+
+<h3 id="API密钥设置"><a href="#API密钥设置" class="headerlink" title="API密钥设置"></a>API密钥设置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> getpass</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_set_env</span>(<span class="params">var: <span class="built_in">str</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> os.environ.get(var):</span><br><span class="line">        os.environ[var] = getpass.getpass(<span class="string">f&quot;<span class="subst">&#123;var&#125;</span>: &quot;</span>)</span><br><span class="line"></span><br><span class="line">_set_env(<span class="string">&quot;ANTHROPIC_API_KEY&quot;</span>)</span><br><span class="line">_set_env(<span class="string">&quot;LANGSMITH_API_KEY&quot;</span>)</span><br><span class="line">_set_env(<span class="string">&quot;TAVILY_API_KEY&quot;</span>)</span><br><span class="line"></span><br><span class="line">os.environ[<span class="string">&quot;LANGCHAIN_TRACING_V2&quot;</span>] = <span class="string">&quot;true&quot;</span></span><br><span class="line">os.environ[<span class="string">&quot;LANGCHAIN_PROJECT&quot;</span>] = <span class="string">&quot;LangGraph高级教程&quot;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🤖-基础对话实现"><a href="#🤖-基础对话实现" class="headerlink" title="🤖 基础对话实现"></a>🤖 基础对话实现</h2><h3 id="状态机定义"><a href="#状态机定义" class="headerlink" title="状态机定义"></a>状态机定义</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Annotated</span><br><span class="line"><span class="keyword">from</span> langgraph.graph <span class="keyword">import</span> StateGraph</span><br><span class="line"><span class="keyword">from</span> langgraph.graph.message <span class="keyword">import</span> add_messages</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChatState</span>(<span class="params">TypedDict</span>):</span></span><br><span class="line">    messages: Annotated[<span class="built_in">list</span>, add_messages]</span><br><span class="line"></span><br><span class="line">graph_builder = StateGraph(ChatState)</span><br></pre></td></tr></table></figure>
+
+<h3 id="对话节点配置"><a href="#对话节点配置" class="headerlink" title="对话节点配置"></a>对话节点配置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_anthropic <span class="keyword">import</span> ChatAnthropic</span><br><span class="line"></span><br><span class="line">llm = ChatAnthropic(model=<span class="string">&quot;claude-3-haiku-20240307&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">chatbot_node</span>(<span class="params">state: ChatState</span>):</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;messages&quot;</span>: [llm.invoke(state[<span class="string">&quot;messages&quot;</span>])]&#125;</span><br><span class="line"></span><br><span class="line">graph_builder.add_node(<span class="string">&quot;chatbot&quot;</span>, chatbot_node)</span><br><span class="line">graph_builder.add_edge(<span class="string">&quot;chatbot&quot;</span>, END)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🔍-增强搜索能力"><a href="#🔍-增强搜索能力" class="headerlink" title="🔍 增强搜索能力"></a>🔍 增强搜索能力</h2><h3 id="搜索工具集成"><a href="#搜索工具集成" class="headerlink" title="搜索工具集成"></a>搜索工具集成</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_community.tools.tavily_search <span class="keyword">import</span> TavilySearchResults</span><br><span class="line"></span><br><span class="line">search_tool = TavilySearchResults(max_results=<span class="number">3</span>)</span><br><span class="line">llm_with_tools = llm.bind_tools([search_tool])</span><br></pre></td></tr></table></figure>
+
+<h3 id="工具路由机制"><a href="#工具路由机制" class="headerlink" title="工具路由机制"></a>工具路由机制</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langgraph.prebuilt <span class="keyword">import</span> ToolNode, tools_condition</span><br><span class="line"></span><br><span class="line">tool_node = ToolNode([search_tool])</span><br><span class="line">graph_builder.add_node(<span class="string">&quot;search&quot;</span>, tool_node)</span><br><span class="line"></span><br><span class="line">graph_builder.add_conditional_edges(</span><br><span class="line">    <span class="string">&quot;chatbot&quot;</span>,</span><br><span class="line">    tools_condition,</span><br><span class="line">    &#123; <span class="string">&quot;search&quot;</span>: <span class="string">&quot;search&quot;</span>, <span class="string">&quot;END&quot;</span>: END &#125;</span><br><span class="line">)</span><br><span class="line">graph_builder.add_edge(<span class="string">&quot;search&quot;</span>, <span class="string">&quot;chatbot&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧠-记忆持久化"><a href="#🧠-记忆持久化" class="headerlink" title="🧠 记忆持久化"></a>🧠 记忆持久化</h2><h3 id="记忆存储方案"><a href="#记忆存储方案" class="headerlink" title="记忆存储方案"></a>记忆存储方案</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langgraph.checkpoint.sqlite <span class="keyword">import</span> SqliteSaver</span><br><span class="line"></span><br><span class="line">memory = SqliteSaver.from_conn_string(<span class="string">&quot;:memory:&quot;</span>)</span><br><span class="line">graph = graph_builder.<span class="built_in">compile</span>(checkpointer=memory)</span><br></pre></td></tr></table></figure>
+
+<h3 id="多会话管理"><a href="#多会话管理" class="headerlink" title="多会话管理"></a>多会话管理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建新会话</span></span><br><span class="line">config = &#123;<span class="string">&quot;configurable&quot;</span>: &#123;<span class="string">&quot;thread_id&quot;</span>: <span class="string">&quot;session_01&quot;</span>&#125;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 恢复历史会话</span></span><br><span class="line">history = graph.get_state(config)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="👥-人工审核机制"><a href="#👥-人工审核机制" class="headerlink" title="👥 人工审核机制"></a>👥 人工审核机制</h2><h3 id="审核点配置"><a href="#审核点配置" class="headerlink" title="审核点配置"></a>审核点配置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graph = graph_builder.<span class="built_in">compile</span>(</span><br><span class="line">    checkpointer=memory,</span><br><span class="line">    interrupt_before=[<span class="string">&quot;search&quot;</span>],</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="人工审批流程"><a href="#人工审批流程" class="headerlink" title="人工审批流程"></a>人工审批流程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">human_approve</span>(<span class="params">action</span>):</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;待审核操作：<span class="subst">&#123;action&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">input</span>(<span class="string">&quot;是否批准？(y/n): &quot;</span>).lower() == <span class="string">&quot;y&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> human_approve(pending_action):</span><br><span class="line">    graph.update_state(config, approved_response)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🔧-状态热更新"><a href="#🔧-状态热更新" class="headerlink" title="🔧 状态热更新"></a>🔧 状态热更新</h2><h3 id="实时状态修改"><a href="#实时状态修改" class="headerlink" title="实时状态修改"></a>实时状态修改</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain_core.messages <span class="keyword">import</span> AIMessage, ToolMessage</span><br><span class="line"></span><br><span class="line">new_messages = [</span><br><span class="line">    ToolMessage(</span><br><span class="line">        content=updated_info,</span><br><span class="line">        tool_call_id=existing_call</span><br><span class="line">    ),</span><br><span class="line">    AIMessage(content=approved_response)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">graph.update_state(</span><br><span class="line">    config,</span><br><span class="line">    &#123;<span class="string">&quot;messages&quot;</span>: new_messages&#125;,</span><br><span class="line">    as_node=<span class="string">&quot;chatbot&quot;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🚀-部署建议"><a href="#🚀-部署建议" class="headerlink" title="🚀 部署建议"></a>🚀 部署建议</h2><ol>
+<li><p><strong>性能优化</strong></p>
+<ul>
+<li>启用Redis缓存层</li>
+<li>实现异步处理队列</li>
+<li>添加限流熔断机制</li>
+</ul>
+</li>
+<li><p><strong>安全增强</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 敏感词过滤示例</span></span><br><span class="line">SAFETY_FILTER = SafetyFilter()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">safe_response</span>(<span class="params">state</span>):</span></span><br><span class="line">    response = llm.invoke(state)</span><br><span class="line">    <span class="keyword">return</span> SAFETY_FILTER.scan(response)</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>监控方案</strong></p>
+<ul>
+<li>接入Prometheus指标</li>
+<li>实现LangSmith全链路追踪</li>
+<li>配置异常报警机制</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="📌-资源推荐"><a href="#📌-资源推荐" class="headerlink" title="📌 资源推荐"></a>📌 资源推荐</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://langchain.ai/langgraph">LangGraph官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.anthropic.com/">Claude API文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://tavily.com/docs">Tavily搜索API</a></li>
+</ul>
+<blockquote>
+<p>提示：所有代码示例需在实际环境中测试后使用，建议通过LangSmith进行全流程调试</p>
+</blockquote>
+<p>通过本方案，您可以构建出具备持续学习能力和安全管控的企业级对话系统。欢迎在评论区交流实战经验！ 💬</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">牛蛙JUN</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://qi-zou.github.io/2025/03/25/%E4%BD%BF%E7%94%A8LangGraph%E6%9E%84%E5%BB%BA%E6%99%BA%E8%83%BD%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/">http://qi-zou.github.io/2025/03/25/%E4%BD%BF%E7%94%A8LangGraph%E6%9E%84%E5%BB%BA%E6%99%BA%E8%83%BD%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Qi-Zou.github.io" target="_blank">牛蛙JUN</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/LangGraph/">LangGraph</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2025/02/25/left-join-%E4%B8%8E-where-%E6%9D%A1%E4%BB%B6%E8%BF%87%E6%BB%A4%E5%8C%BA%E5%88%AB/"><img class="next-cover" src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">LEFT JOIN 中 `ON` 与 `WHERE` 过滤条件的区别分析</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/10/cqBXSH6kytINKGU.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">牛蛙JUN</div><div class="author-info__description">拥抱变化</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">47</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">45</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Qi-Zou"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">欢迎大家一起讨论</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%F0%9F%9A%80-%E4%BD%BF%E7%94%A8LangGraph%E6%9E%84%E5%BB%BA%E6%99%BA%E8%83%BD%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">🚀 使用LangGraph构建智能聊天机器人技术解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9A-%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.</span> <span class="toc-text">📚 目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8F%97%EF%B8%8F-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.</span> <span class="toc-text">🏗️ 架构概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9A%99%EF%B8%8F-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.3.</span> <span class="toc-text">⚙️ 环境配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.1.</span> <span class="toc-text">依赖安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#API%E5%AF%86%E9%92%A5%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.3.2.</span> <span class="toc-text">API密钥设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%A4%96-%E5%9F%BA%E7%A1%80%E5%AF%B9%E8%AF%9D%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.4.</span> <span class="toc-text">🤖 基础对话实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA%E5%AE%9A%E4%B9%89"><span class="toc-number">1.4.1.</span> <span class="toc-text">状态机定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%AF%9D%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.2.</span> <span class="toc-text">对话节点配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%8D-%E5%A2%9E%E5%BC%BA%E6%90%9C%E7%B4%A2%E8%83%BD%E5%8A%9B"><span class="toc-number">1.5.</span> <span class="toc-text">🔍 增强搜索能力</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E5%B7%A5%E5%85%B7%E9%9B%86%E6%88%90"><span class="toc-number">1.5.1.</span> <span class="toc-text">搜索工具集成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E8%B7%AF%E7%94%B1%E6%9C%BA%E5%88%B6"><span class="toc-number">1.5.2.</span> <span class="toc-text">工具路由机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%A7%A0-%E8%AE%B0%E5%BF%86%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">1.6.</span> <span class="toc-text">🧠 记忆持久化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%B0%E5%BF%86%E5%AD%98%E5%82%A8%E6%96%B9%E6%A1%88"><span class="toc-number">1.6.1.</span> <span class="toc-text">记忆存储方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86"><span class="toc-number">1.6.2.</span> <span class="toc-text">多会话管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%91%A5-%E4%BA%BA%E5%B7%A5%E5%AE%A1%E6%A0%B8%E6%9C%BA%E5%88%B6"><span class="toc-number">1.7.</span> <span class="toc-text">👥 人工审核机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A1%E6%A0%B8%E7%82%B9%E9%85%8D%E7%BD%AE"><span class="toc-number">1.7.1.</span> <span class="toc-text">审核点配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%BA%E5%B7%A5%E5%AE%A1%E6%89%B9%E6%B5%81%E7%A8%8B"><span class="toc-number">1.7.2.</span> <span class="toc-text">人工审批流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%A7-%E7%8A%B6%E6%80%81%E7%83%AD%E6%9B%B4%E6%96%B0"><span class="toc-number">1.8.</span> <span class="toc-text">🔧 状态热更新</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E6%97%B6%E7%8A%B6%E6%80%81%E4%BF%AE%E6%94%B9"><span class="toc-number">1.8.1.</span> <span class="toc-text">实时状态修改</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%9A%80-%E9%83%A8%E7%BD%B2%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.9.</span> <span class="toc-text">🚀 部署建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-%E8%B5%84%E6%BA%90%E6%8E%A8%E8%8D%90"><span class="toc-number">1.10.</span> <span class="toc-text">📌 资源推荐</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/03/25/%E4%BD%BF%E7%94%A8LangGraph%E6%9E%84%E5%BB%BA%E6%99%BA%E8%83%BD%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/" title="使用LangGraph构建智能聊天机器人技术解析"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用LangGraph构建智能聊天机器人技术解析"/></a><div class="content"><a class="title" href="/2025/03/25/%E4%BD%BF%E7%94%A8LangGraph%E6%9E%84%E5%BB%BA%E6%99%BA%E8%83%BD%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/" title="使用LangGraph构建智能聊天机器人技术解析">使用LangGraph构建智能聊天机器人技术解析</a><time datetime="2025-03-25T14:21:36.000Z" title="发表于 2025-03-25 14:21:36">2025-03-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/25/left-join-%E4%B8%8E-where-%E6%9D%A1%E4%BB%B6%E8%BF%87%E6%BB%A4%E5%8C%BA%E5%88%AB/" title="LEFT JOIN 中 `ON` 与 `WHERE` 过滤条件的区别分析"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LEFT JOIN 中 `ON` 与 `WHERE` 过滤条件的区别分析"/></a><div class="content"><a class="title" href="/2025/02/25/left-join-%E4%B8%8E-where-%E6%9D%A1%E4%BB%B6%E8%BF%87%E6%BB%A4%E5%8C%BA%E5%88%AB/" title="LEFT JOIN 中 `ON` 与 `WHERE` 过滤条件的区别分析">LEFT JOIN 中 `ON` 与 `WHERE` 过滤条件的区别分析</a><time datetime="2025-02-25T09:51:49.000Z" title="发表于 2025-02-25 09:51:49">2025-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/18/%E5%B1%80%E5%9F%9F%E7%BD%91%E8%AE%BF%E9%97%AEwsl%E4%B8%8A%E7%9A%84%E6%9C%8D%E5%8A%A1/" title="局域网访问wsl上的服务"><img src="/2025/02/18/%E5%B1%80%E5%9F%9F%E7%BD%91%E8%AE%BF%E9%97%AEwsl%E4%B8%8A%E7%9A%84%E6%9C%8D%E5%8A%A1/Wyxzb3gUvo88Muxk5lWcW6iGnzb.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="局域网访问wsl上的服务"/></a><div class="content"><a class="title" href="/2025/02/18/%E5%B1%80%E5%9F%9F%E7%BD%91%E8%AE%BF%E9%97%AEwsl%E4%B8%8A%E7%9A%84%E6%9C%8D%E5%8A%A1/" title="局域网访问wsl上的服务">局域网访问wsl上的服务</a><time datetime="2025-02-18T09:25:30.000Z" title="发表于 2025-02-18 09:25:30">2025-02-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/02/18/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E8%A7%86%E9%A2%91%E8%BD%AC%E6%96%87%E5%AD%97%E6%A8%A1%E5%9E%8B/" title="本地部署视频转文字模型"><img src="/2025/02/18/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E8%A7%86%E9%A2%91%E8%BD%AC%E6%96%87%E5%AD%97%E6%A8%A1%E5%9E%8B/TbqPbrpBGoVIw5xkWaZcDNB0nVe.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="本地部署视频转文字模型"/></a><div class="content"><a class="title" href="/2025/02/18/%E6%9C%AC%E5%9C%B0%E9%83%A8%E7%BD%B2%E8%A7%86%E9%A2%91%E8%BD%AC%E6%96%87%E5%AD%97%E6%A8%A1%E5%9E%8B/" title="本地部署视频转文字模型">本地部署视频转文字模型</a><time datetime="2025-02-18T09:16:06.000Z" title="发表于 2025-02-18 09:16:06">2025-02-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/12/26/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%91%E4%B8%A4%E4%B8%AA%E9%9D%9E%E9%87%8D%E5%8F%A0%E5%AD%90%E6%95%B0%E7%BB%84%E7%9A%84%E6%9C%80%E5%A4%A7%E5%92%8C/" title="【Leetcode刷题】两个非重叠子数组的最大和"><img src="/2024/12/26/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%91%E4%B8%A4%E4%B8%AA%E9%9D%9E%E9%87%8D%E5%8F%A0%E5%AD%90%E6%95%B0%E7%BB%84%E7%9A%84%E6%9C%80%E5%A4%A7%E5%92%8C/2020241226171306.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="【Leetcode刷题】两个非重叠子数组的最大和"/></a><div class="content"><a class="title" href="/2024/12/26/%E3%80%90Leetcode%E5%88%B7%E9%A2%98%E3%80%91%E4%B8%A4%E4%B8%AA%E9%9D%9E%E9%87%8D%E5%8F%A0%E5%AD%90%E6%95%B0%E7%BB%84%E7%9A%84%E6%9C%80%E5%A4%A7%E5%92%8C/" title="【Leetcode刷题】两个非重叠子数组的最大和">【Leetcode刷题】两个非重叠子数组的最大和</a><time datetime="2024-12-26T09:12:16.000Z" title="发表于 2024-12-26 09:12:16">2024-12-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
