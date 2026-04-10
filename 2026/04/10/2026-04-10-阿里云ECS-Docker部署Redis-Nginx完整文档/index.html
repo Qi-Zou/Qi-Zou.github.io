@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>阿里云ECS（国内）Docker部署Redis+Nginx完整文档 | 牛蛙JUN</title><meta name="keywords" content="Docker,Redis,Nginx,阿里云,部署"><meta name="author" content="牛蛙JUN"><meta name="copyright" content="牛蛙JUN"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="阿里云ECS（国内）Docker部署Redis+Nginx完整文档一、文档说明本文档适配阿里云国内ECS服务器，已提前部署Docker环境，重点解决国内Docker拉取官方镜像慢、失败的问题，提供Redis（带安全配置、数据持久化、开机自启）和Nginx（带配置挂载、日志持久化、开机自启）的完整部署流程，所有命令可直接复制粘贴执行，生产环境可直接复用。 核心优势：采用国内可靠公共镜像（DaoClo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里云ECS（国内）Docker部署Redis+Nginx完整文档">
+<meta property="og:url" content="http://qi-zou.github.io/2026/04/10/2026-04-10-%E9%98%BF%E9%87%8C%E4%BA%91ECS-Docker%E9%83%A8%E7%BD%B2Redis-Nginx%E5%AE%8C%E6%95%B4%E6%96%87%E6%A1%A3/index.html">
+<meta property="og:site_name" content="牛蛙JUN">
+<meta property="og:description" content="阿里云ECS（国内）Docker部署Redis+Nginx完整文档一、文档说明本文档适配阿里云国内ECS服务器，已提前部署Docker环境，重点解决国内Docker拉取官方镜像慢、失败的问题，提供Redis（带安全配置、数据持久化、开机自启）和Nginx（带配置挂载、日志持久化、开机自启）的完整部署流程，所有命令可直接复制粘贴执行，生产环境可直接复用。 核心优势：采用国内可靠公共镜像（DaoClo">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg">
+<meta property="article:published_time" content="2026-04-10T03:27:00.000Z">
+<meta property="article:modified_time" content="2026-04-10T03:28:05.631Z">
+<meta property="article:author" content="牛蛙JUN">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="Nginx">
+<meta property="article:tag" content="阿里云">
+<meta property="article:tag" content="部署">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg"><link rel="shortcut icon" href="https://s2.loli.net/2022/01/10/cqBXSH6kytINKGU.png"><link rel="canonical" href="http://qi-zou.github.io/2026/04/10/2026-04-10-%E9%98%BF%E9%87%8C%E4%BA%91ECS-Docker%E9%83%A8%E7%BD%B2Redis-Nginx%E5%AE%8C%E6%95%B4%E6%96%87%E6%A1%A3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '阿里云ECS（国内）Docker部署Redis+Nginx完整文档',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-04-10 11:28:05'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/10/cqBXSH6kytINKGU.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友联</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">牛蛙JUN</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友联</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">阿里云ECS（国内）Docker部署Redis+Nginx完整文档</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-10T03:27:00.000Z" title="发表于 2026-04-10 11:27:00">2026-04-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-10T03:28:05.631Z" title="更新于 2026-04-10 11:28:05">2026-04-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%BF%90%E7%BB%B4%E9%83%A8%E7%BD%B2/">运维部署</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="阿里云ECS（国内）Docker部署Redis+Nginx完整文档"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="阿里云ECS（国内）Docker部署Redis-Nginx完整文档"><a href="#阿里云ECS（国内）Docker部署Redis-Nginx完整文档" class="headerlink" title="阿里云ECS（国内）Docker部署Redis+Nginx完整文档"></a>阿里云ECS（国内）Docker部署Redis+Nginx完整文档</h1><h2 id="一、文档说明"><a href="#一、文档说明" class="headerlink" title="一、文档说明"></a>一、文档说明</h2><p>本文档适配阿里云国内ECS服务器，已提前部署Docker环境，重点解决国内Docker拉取官方镜像慢、失败的问题，提供Redis（带安全配置、数据持久化、开机自启）和Nginx（带配置挂载、日志持久化、开机自启）的完整部署流程，所有命令可直接复制粘贴执行，生产环境可直接复用。</p>
+<p><strong>核心优势</strong>：采用国内可靠公共镜像（DaoCloud、网易），无需额外配置复杂环境，全程命令行操作，步骤清晰，解决国内镜像拉取痛点。</p>
+<span id="more"></span>
+
+<h2 id="二、前置准备"><a href="#二、前置准备" class="headerlink" title="二、前置准备"></a>二、前置准备</h2><ul>
+<li><strong>环境</strong>：阿里云国内ECS服务器（CentOS/Ubuntu均可），已安装Docker。</li>
+<li><strong>权限</strong>：执行命令时需具备sudo权限（或直接使用root用户）。</li>
+<li><strong>工具</strong>：Xshell、Putty等SSH连接工具，用于连接ECS服务器执行命令。</li>
+<li><strong>安全</strong>：提前准备阿里云ECS安全组配置权限（后续需开放对应端口）。</li>
+</ul>
+<h2 id="三、Docker国内镜像加速配置（一劳永逸）"><a href="#三、Docker国内镜像加速配置（一劳永逸）" class="headerlink" title="三、Docker国内镜像加速配置（一劳永逸）"></a>三、Docker国内镜像加速配置（一劳永逸）</h2><p>为解决所有Docker镜像（包括Redis、Nginx）拉取慢、失败的问题，先配置国内镜像加速，优先使用DaoCloud、网易镜像源，稳定性最高。</p>
+<h3 id="3-1-执行配置命令"><a href="#3-1-执行配置命令" class="headerlink" title="3.1 执行配置命令"></a>3.1 执行配置命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 创建Docker配置文件夹（若不存在）</span></span><br><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 写入国内镜像加速地址（多源备用，避免单一源失效）</span></span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;registry-mirrors&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;https://docker.m.daocloud.io&quot;</span>,</span><br><span class="line">    <span class="string">&quot;https://hub-mirror.c.163.com&quot;</span>,</span><br><span class="line">    <span class="string">&quot;https://mirror.baidubce.com&quot;</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 重启Docker，使配置生效</span></span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p>配置完成后，后续拉取任何Docker镜像，都会自动走国内加速源，无需再单独指定镜像地址。</p>
+<h2 id="四、Docker部署Redis"><a href="#四、Docker部署Redis" class="headerlink" title="四、Docker部署Redis"></a>四、Docker部署Redis</h2><h3 id="4-1-拉取Redis国内镜像"><a href="#4-1-拉取Redis国内镜像" class="headerlink" title="4.1 拉取Redis国内镜像"></a>4.1 拉取Redis国内镜像</h3><p>使用DaoCloud国内镜像，100%可拉取，无需登录，速度最快：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉取最新稳定版Redis</span></span><br><span class="line">docker pull docker.m.daocloud.io/library/redis</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-创建Redis持久化目录"><a href="#4-2-创建Redis持久化目录" class="headerlink" title="4.2 创建Redis持久化目录"></a>4.2 创建Redis持久化目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /docker/redis/conf</span><br><span class="line">sudo mkdir -p /docker/redis/data</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-配置Redis安全及性能参数"><a href="#4-3-配置Redis安全及性能参数" class="headerlink" title="4.3 配置Redis安全及性能参数"></a>4.3 配置Redis安全及性能参数</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /docker/redis/conf/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>复制以下配置（建议修改密码）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bind 0.0.0.0</span><br><span class="line">protected-mode no</span><br><span class="line">requirepass 123456</span><br><span class="line">appendonly yes</span><br><span class="line">loglevel notice</span><br><span class="line">timeout 300</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-启动Redis容器"><a href="#4-4-启动Redis容器" class="headerlink" title="4.4 启动Redis容器"></a>4.4 启动Redis容器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  --name redis \</span><br><span class="line">  --restart=always \</span><br><span class="line">  -p 6379:6379 \</span><br><span class="line">  -v /docker/redis/conf/redis.conf:/etc/redis/redis.conf \</span><br><span class="line">  -v /docker/redis/data:/data \</span><br><span class="line">  docker.m.daocloud.io/library/redis \</span><br><span class="line">  redis-server /etc/redis/redis.conf</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-5-验证Redis部署成功"><a href="#4-5-验证Redis部署成功" class="headerlink" title="4.5 验证Redis部署成功"></a>4.5 验证Redis部署成功</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker ps | grep redis</span><br><span class="line">docker <span class="built_in">exec</span> -it redis redis-cli</span><br><span class="line">AUTH 123456</span><br><span class="line"><span class="built_in">set</span> <span class="built_in">test</span> hello</span><br><span class="line">get <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-6-阿里云ECS安全组配置"><a href="#4-6-阿里云ECS安全组配置" class="headerlink" title="4.6 阿里云ECS安全组配置"></a>4.6 阿里云ECS安全组配置</h3><p>开放6379端口：登录ECS控制台 → 安全组 → 配置规则 → 入方向添加6379/6379</p>
+<h3 id="4-7-Redis常用管理命令"><a href="#4-7-Redis常用管理命令" class="headerlink" title="4.7 Redis常用管理命令"></a>4.7 Redis常用管理命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker stop redis</span><br><span class="line">docker start redis</span><br><span class="line">docker restart redis</span><br><span class="line">docker rm redis</span><br><span class="line">docker logs redis</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、Docker部署Nginx"><a href="#五、Docker部署Nginx" class="headerlink" title="五、Docker部署Nginx"></a>五、Docker部署Nginx</h2><h3 id="5-1-拉取Nginx国内镜像"><a href="#5-1-拉取Nginx国内镜像" class="headerlink" title="5.1 拉取Nginx国内镜像"></a>5.1 拉取Nginx国内镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull docker.m.daocloud.io/library/nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-创建Nginx持久化目录"><a href="#5-2-创建Nginx持久化目录" class="headerlink" title="5.2 创建Nginx持久化目录"></a>5.2 创建Nginx持久化目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /docker/nginx/conf.d</span><br><span class="line">sudo mkdir -p /docker/nginx/html</span><br><span class="line">sudo mkdir -p /docker/nginx/logs</span><br><span class="line">sudo mkdir -p /docker/nginx/conf</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-复制Nginx官方默认配置"><a href="#5-3-复制Nginx官方默认配置" class="headerlink" title="5.3 复制Nginx官方默认配置"></a>5.3 复制Nginx官方默认配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name tmp-nginx docker.m.daocloud.io/library/nginx</span><br><span class="line">docker cp tmp-nginx:/etc/nginx/nginx.conf /docker/nginx/conf/nginx.conf</span><br><span class="line">docker cp tmp-nginx:/etc/nginx/conf.d/default.conf /docker/nginx/conf.d/</span><br><span class="line">docker rm -f tmp-nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-4-创建测试页面"><a href="#5-4-创建测试页面" class="headerlink" title="5.4 创建测试页面"></a>5.4 创建测试页面</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&lt;h1&gt;Nginx部署成功（阿里云ECS+Docker）&lt;/h1&gt;&quot;</span> &gt; /docker/nginx/html/index.html</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-5-启动Nginx容器"><a href="#5-5-启动Nginx容器" class="headerlink" title="5.5 启动Nginx容器"></a>5.5 启动Nginx容器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  --name nginx \</span><br><span class="line">  --restart=always \</span><br><span class="line">  -p 80:80 \</span><br><span class="line">  -v /docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \</span><br><span class="line">  -v /docker/nginx/conf.d:/etc/nginx/conf.d \</span><br><span class="line">  -v /docker/nginx/html:/usr/share/nginx/html \</span><br><span class="line">  -v /docker/nginx/logs:/var/<span class="built_in">log</span>/nginx \</span><br><span class="line">  docker.m.daocloud.io/library/nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-6-验证Nginx部署成功"><a href="#5-6-验证Nginx部署成功" class="headerlink" title="5.6 验证Nginx部署成功"></a>5.6 验证Nginx部署成功</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps | grep nginx</span><br></pre></td></tr></table></figure>
+
+<p>浏览器访问：<a target="_blank" rel="noopener" href="http://ecs公网ip/">http://ECS公网IP</a></p>
+<h3 id="5-7-阿里云ECS安全组配置"><a href="#5-7-阿里云ECS安全组配置" class="headerlink" title="5.7 阿里云ECS安全组配置"></a>5.7 阿里云ECS安全组配置</h3><p>开放80端口：安全组 → 入方向 → 80/80 → 0.0.0.0/0</p>
+<h3 id="5-8-Nginx常用管理命令"><a href="#5-8-Nginx常用管理命令" class="headerlink" title="5.8 Nginx常用管理命令"></a>5.8 Nginx常用管理命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker stop nginx</span><br><span class="line">docker start nginx</span><br><span class="line">docker restart nginx</span><br><span class="line">docker rm nginx</span><br><span class="line">docker logs nginx</span><br></pre></td></tr></table></figure>
+
+<h2 id="六、常见问题解决"><a href="#六、常见问题解决" class="headerlink" title="六、常见问题解决"></a>六、常见问题解决</h2><h3 id="6-1-镜像拉取失败"><a href="#6-1-镜像拉取失败" class="headerlink" title="6.1 镜像拉取失败"></a>6.1 镜像拉取失败</h3><p>重新执行镜像加速配置，重启Docker后重试。</p>
+<h3 id="6-2-容器启动失败"><a href="#6-2-容器启动失败" class="headerlink" title="6.2 容器启动失败"></a>6.2 容器启动失败</h3><p>使用docker logs查看日志：</p>
+<ul>
+<li>配置文件错误</li>
+<li>端口占用</li>
+<li>目录权限：sudo chmod -R 777 /docker</li>
+</ul>
+<h3 id="6-3-浏览器无法访问Nginx"><a href="#6-3-浏览器无法访问Nginx" class="headerlink" title="6.3 浏览器无法访问Nginx"></a>6.3 浏览器无法访问Nginx</h3><ol>
+<li>检查安全组80端口</li>
+<li>检查容器运行状态</li>
+<li>检查防火墙：sudo firewall-cmd –permanent –add-port=80/tcp &amp;&amp; sudo firewall-cmd –reload</li>
+</ol>
+<h2 id="七、总结"><a href="#七、总结" class="headerlink" title="七、总结"></a>七、总结</h2><ul>
+<li><strong>解决国内镜像拉取问题</strong>：DaoCloud、网易国内镜像源</li>
+<li><strong>生产环境适配</strong>：数据持久化、开机自启、安全密码</li>
+<li><strong>操作便捷</strong>：命令可直接复制执行</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">牛蛙JUN</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://qi-zou.github.io/2026/04/10/2026-04-10-%E9%98%BF%E9%87%8C%E4%BA%91ECS-Docker%E9%83%A8%E7%BD%B2Redis-Nginx%E5%AE%8C%E6%95%B4%E6%96%87%E6%A1%A3/">http://qi-zou.github.io/2026/04/10/2026-04-10-%E9%98%BF%E9%87%8C%E4%BA%91ECS-Docker%E9%83%A8%E7%BD%B2Redis-Nginx%E5%AE%8C%E6%95%B4%E6%96%87%E6%A1%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Qi-Zou.github.io" target="_blank">牛蛙JUN</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Docker/">Docker</a><a class="post-meta__tags" href="/tags/Redis/">Redis</a><a class="post-meta__tags" href="/tags/Nginx/">Nginx</a><a class="post-meta__tags" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/">阿里云</a><a class="post-meta__tags" href="/tags/%E9%83%A8%E7%BD%B2/">部署</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2026/04/09/AI%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B-%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B/"><img class="next-cover" src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">AI 交互范式的演进：从提示词工程到驾驭工程</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2026/03/21/2026-03-21-OpenClaw%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" title="OpenClaw 安装教程 - 你的私人 AI 助手"><img class="cover" src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-21</div><div class="title">OpenClaw 安装教程 - 你的私人 AI 助手</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/10/cqBXSH6kytINKGU.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">牛蛙JUN</div><div class="author-info__description">拥抱变化</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Qi-Zou"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">欢迎大家一起讨论</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%98%BF%E9%87%8C%E4%BA%91ECS%EF%BC%88%E5%9B%BD%E5%86%85%EF%BC%89Docker%E9%83%A8%E7%BD%B2Redis-Nginx%E5%AE%8C%E6%95%B4%E6%96%87%E6%A1%A3"><span class="toc-number">1.</span> <span class="toc-text">阿里云ECS（国内）Docker部署Redis+Nginx完整文档</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%96%87%E6%A1%A3%E8%AF%B4%E6%98%8E"><span class="toc-number">1.1.</span> <span class="toc-text">一、文档说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%89%8D%E7%BD%AE%E5%87%86%E5%A4%87"><span class="toc-number">1.2.</span> <span class="toc-text">二、前置准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Docker%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F%E9%85%8D%E7%BD%AE%EF%BC%88%E4%B8%80%E5%8A%B3%E6%B0%B8%E9%80%B8%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">三、Docker国内镜像加速配置（一劳永逸）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E6%89%A7%E8%A1%8C%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 执行配置命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Docker%E9%83%A8%E7%BD%B2Redis"><span class="toc-number">1.4.</span> <span class="toc-text">四、Docker部署Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E6%8B%89%E5%8F%96Redis%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 拉取Redis国内镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%88%9B%E5%BB%BARedis%E6%8C%81%E4%B9%85%E5%8C%96%E7%9B%AE%E5%BD%95"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 创建Redis持久化目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-%E9%85%8D%E7%BD%AERedis%E5%AE%89%E5%85%A8%E5%8F%8A%E6%80%A7%E8%83%BD%E5%8F%82%E6%95%B0"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 配置Redis安全及性能参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-%E5%90%AF%E5%8A%A8Redis%E5%AE%B9%E5%99%A8"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 启动Redis容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-%E9%AA%8C%E8%AF%81Redis%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F"><span class="toc-number">1.4.5.</span> <span class="toc-text">4.5 验证Redis部署成功</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-%E9%98%BF%E9%87%8C%E4%BA%91ECS%E5%AE%89%E5%85%A8%E7%BB%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.6.</span> <span class="toc-text">4.6 阿里云ECS安全组配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-7-Redis%E5%B8%B8%E7%94%A8%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.7.</span> <span class="toc-text">4.7 Redis常用管理命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81Docker%E9%83%A8%E7%BD%B2Nginx"><span class="toc-number">1.5.</span> <span class="toc-text">五、Docker部署Nginx</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E6%8B%89%E5%8F%96Nginx%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 拉取Nginx国内镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E5%88%9B%E5%BB%BANginx%E6%8C%81%E4%B9%85%E5%8C%96%E7%9B%AE%E5%BD%95"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 创建Nginx持久化目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E5%A4%8D%E5%88%B6Nginx%E5%AE%98%E6%96%B9%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 复制Nginx官方默认配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E5%88%9B%E5%BB%BA%E6%B5%8B%E8%AF%95%E9%A1%B5%E9%9D%A2"><span class="toc-number">1.5.4.</span> <span class="toc-text">5.4 创建测试页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-%E5%90%AF%E5%8A%A8Nginx%E5%AE%B9%E5%99%A8"><span class="toc-number">1.5.5.</span> <span class="toc-text">5.5 启动Nginx容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-%E9%AA%8C%E8%AF%81Nginx%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F"><span class="toc-number">1.5.6.</span> <span class="toc-text">5.6 验证Nginx部署成功</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-7-%E9%98%BF%E9%87%8C%E4%BA%91ECS%E5%AE%89%E5%85%A8%E7%BB%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.5.7.</span> <span class="toc-text">5.7 阿里云ECS安全组配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-8-Nginx%E5%B8%B8%E7%94%A8%E7%AE%A1%E7%90%86%E5%91%BD%E4%BB%A4"><span class="toc-number">1.5.8.</span> <span class="toc-text">5.8 Nginx常用管理命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="toc-number">1.6.</span> <span class="toc-text">六、常见问题解决</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E9%95%9C%E5%83%8F%E6%8B%89%E5%8F%96%E5%A4%B1%E8%B4%A5"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1 镜像拉取失败</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5"><span class="toc-number">1.6.2.</span> <span class="toc-text">6.2 容器启动失败</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-%E6%B5%8F%E8%A7%88%E5%99%A8%E6%97%A0%E6%B3%95%E8%AE%BF%E9%97%AENginx"><span class="toc-number">1.6.3.</span> <span class="toc-text">6.3 浏览器无法访问Nginx</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-number">1.7.</span> <span class="toc-text">七、总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/04/10/2026-04-10-%E9%98%BF%E9%87%8C%E4%BA%91ECS-Docker%E9%83%A8%E7%BD%B2Redis-Nginx%E5%AE%8C%E6%95%B4%E6%96%87%E6%A1%A3/" title="阿里云ECS（国内）Docker部署Redis+Nginx完整文档"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="阿里云ECS（国内）Docker部署Redis+Nginx完整文档"/></a><div class="content"><a class="title" href="/2026/04/10/2026-04-10-%E9%98%BF%E9%87%8C%E4%BA%91ECS-Docker%E9%83%A8%E7%BD%B2Redis-Nginx%E5%AE%8C%E6%95%B4%E6%96%87%E6%A1%A3/" title="阿里云ECS（国内）Docker部署Redis+Nginx完整文档">阿里云ECS（国内）Docker部署Redis+Nginx完整文档</a><time datetime="2026-04-10T03:27:00.000Z" title="发表于 2026-04-10 11:27:00">2026-04-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/04/09/AI%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B-%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B/" title="AI 交互范式的演进：从提示词工程到驾驭工程"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 交互范式的演进：从提示词工程到驾驭工程"/></a><div class="content"><a class="title" href="/2026/04/09/AI%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B-%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B/" title="AI 交互范式的演进：从提示词工程到驾驭工程">AI 交互范式的演进：从提示词工程到驾驭工程</a><time datetime="2026-04-09T05:02:00.000Z" title="发表于 2026-04-09 13:02:00">2026-04-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/21/2026-03-21-OpenClaw%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" title="OpenClaw 安装教程 - 你的私人 AI 助手"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OpenClaw 安装教程 - 你的私人 AI 助手"/></a><div class="content"><a class="title" href="/2026/03/21/2026-03-21-OpenClaw%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" title="OpenClaw 安装教程 - 你的私人 AI 助手">OpenClaw 安装教程 - 你的私人 AI 助手</a><time datetime="2026-03-21T08:00:00.000Z" title="发表于 2026-03-21 16:00:00">2026-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/21/hello-world/" title="博客操作说明文档"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="博客操作说明文档"/></a><div class="content"><a class="title" href="/2026/03/21/hello-world/" title="博客操作说明文档">博客操作说明文档</a><time datetime="2026-03-21T07:44:04.449Z" title="发表于 2026-03-21 15:44:04">2026-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/03/25/%E4%BD%BF%E7%94%A8LangGraph%E6%9E%84%E5%BB%BA%E6%99%BA%E8%83%BD%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/" title="使用LangGraph构建智能聊天机器人技术解析"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用LangGraph构建智能聊天机器人技术解析"/></a><div class="content"><a class="title" href="/2025/03/25/%E4%BD%BF%E7%94%A8LangGraph%E6%9E%84%E5%BB%BA%E6%99%BA%E8%83%BD%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90/" title="使用LangGraph构建智能聊天机器人技术解析">使用LangGraph构建智能聊天机器人技术解析</a><time datetime="2025-03-25T06:21:36.000Z" title="发表于 2025-03-25 14:21:36">2025-03-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
