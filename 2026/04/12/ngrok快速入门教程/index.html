@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ngrok 快速入门：将本地服务安全暴露到公网 | 牛蛙JUN</title><meta name="keywords" content="ngrok,内网穿透,工具"><meta name="author" content="牛蛙JUN"><meta name="copyright" content="牛蛙JUN"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言平时开发时，经常遇到需要把本地服务分享给外部测试或调用 Webhook 的场景，但公司的开发机没有公网 IP，防火墙限制也无法自行开放端口。ngrok 就是来解决这个问题的——一条命令，把本地端口映射到公网 HTTPS 地址。 同时它现在已升级为 AI &amp; API Gateway 平台，不只是隧道，还提供流量策略、WAF、API 路由等企业级功能。 ngrok 是什么ngrok 是一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ngrok 快速入门：将本地服务安全暴露到公网">
+<meta property="og:url" content="http://qi-zou.github.io/2026/04/12/ngrok%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="牛蛙JUN">
+<meta property="og:description" content="前言平时开发时，经常遇到需要把本地服务分享给外部测试或调用 Webhook 的场景，但公司的开发机没有公网 IP，防火墙限制也无法自行开放端口。ngrok 就是来解决这个问题的——一条命令，把本地端口映射到公网 HTTPS 地址。 同时它现在已升级为 AI &amp; API Gateway 平台，不只是隧道，还提供流量策略、WAF、API 路由等企业级功能。 ngrok 是什么ngrok 是一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg">
+<meta property="article:published_time" content="2026-04-12T12:12:00.000Z">
+<meta property="article:modified_time" content="2026-04-12T12:13:20.722Z">
+<meta property="article:author" content="牛蛙JUN">
+<meta property="article:tag" content="ngrok">
+<meta property="article:tag" content="内网穿透">
+<meta property="article:tag" content="工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg"><link rel="shortcut icon" href="https://s2.loli.net/2022/01/10/cqBXSH6kytINKGU.png"><link rel="canonical" href="http://qi-zou.github.io/2026/04/12/ngrok%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ngrok 快速入门：将本地服务安全暴露到公网',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-04-12 20:13:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.0.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/01/10/cqBXSH6kytINKGU.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">51</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">59</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友联</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">牛蛙JUN</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友联</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">ngrok 快速入门：将本地服务安全暴露到公网</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-12T12:12:00.000Z" title="发表于 2026-04-12 20:12:00">2026-04-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-12T12:13:20.722Z" title="更新于 2026-04-12 20:13:20">2026-04-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/">工具推荐</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ngrok 快速入门：将本地服务安全暴露到公网"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>平时开发时，经常遇到需要把本地服务分享给外部测试或调用 Webhook 的场景，但公司的开发机没有公网 IP，防火墙限制也无法自行开放端口。ngrok 就是来解决这个问题的——一条命令，把本地端口映射到公网 HTTPS 地址。</p>
+<p>同时它现在已升级为 AI &amp; API Gateway 平台，不只是隧道，还提供流量策略、WAF、API 路由等企业级功能。</p>
+<h2 id="ngrok-是什么"><a href="#ngrok-是什么" class="headerlink" title="ngrok 是什么"></a>ngrok 是什么</h2><p>ngrok 是一个云端网络平台，核心能力有三个：</p>
+<ol>
+<li><strong>安全隧道</strong> — 把本地服务暴露到公网，无需开放防火墙端口</li>
+<li><strong>AI &amp; API 网关</strong> — 统一管理多个 AI API 的路由、认证和流量控制</li>
+<li><strong>Traffic Policy</strong> — 用 CEL 表达式配置流量规则，替代复杂的 nginx 配置</li>
+</ol>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># macOS</span></span><br><span class="line">brew install ngrok</span><br><span class="line"></span><br><span class="line"><span class="comment"># Linux</span></span><br><span class="line">curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc &gt;/dev/null</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb https://ngrok-agent.s3.amazonaws.com buster main&quot;</span> | sudo tee /etc/apt/sources.list.d/ngrok.list</span><br><span class="line">sudo apt update &amp;&amp; sudo apt install ngrok</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动隧道"><a href="#启动隧道" class="headerlink" title="启动隧道"></a>启动隧道</h3><p>最基础的用法，把本地 8080 端口暴露到公网：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok http 8080</span><br></pre></td></tr></table></figure>
+
+<p>运行后 ngrok 会输出一个公网地址，类似：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://xxxx.ngrok-free.app</span><br></pre></td></tr></table></figure>
+
+<p>访问这个地址，所有请求都会被转发到本地的 8080 端口。</p>
+<h3 id="基本认证"><a href="#基本认证" class="headerlink" title="基本认证"></a>基本认证</h3><p>给隧道加一层 HTTP Basic Auth：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok http 8080 --basic-auth <span class="string">&quot;user:password&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="TCP-端口转发"><a href="#TCP-端口转发" class="headerlink" title="TCP 端口转发"></a>TCP 端口转发</h3><p>暴露非 HTTP 服务，比如数据库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok tcp 5432</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置-Authtoken"><a href="#配置-Authtoken" class="headerlink" title="配置 Authtoken"></a>配置 Authtoken</h3><p>首次使用需要配置 Token（从 <a target="_blank" rel="noopener" href="https://dashboard.ngrok.com/">https://dashboard.ngrok.com</a> 获取）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok config add-authtoken &lt;YOUR_TOKEN&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="进阶功能"><a href="#进阶功能" class="headerlink" title="进阶功能"></a>进阶功能</h2><h3 id="Traffic-Policy"><a href="#Traffic-Policy" class="headerlink" title="Traffic Policy"></a>Traffic Policy</h3><p>ngrok 支持用 CEL 表达式定义流量策略，比如对特定路径限流：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ngrok http 8080 \</span><br><span class="line">  --traffic-policy-file traffic-policy.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># traffic-policy.yaml 示例</span></span><br><span class="line"><span class="attr">on_http_request:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">expressions:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;req.url.path.startsWith(&#x27;/api&#x27;)&quot;</span></span><br><span class="line">    <span class="attr">actions:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">rate-limit</span></span><br><span class="line">        <span class="attr">config:</span></span><br><span class="line">          <span class="attr">algorithm:</span> <span class="string">sliding_window</span></span><br><span class="line">          <span class="attr">bucket_key:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">conn.client_ip</span></span><br><span class="line">          <span class="attr">capacity:</span> <span class="number">100</span></span><br><span class="line">          <span class="attr">rate:</span> <span class="string">60s</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="绑定自定义域名"><a href="#绑定自定义域名" class="headerlink" title="绑定自定义域名"></a>绑定自定义域名</h3><p>付费版本支持绑定自己的域名：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ngrok http 8080 --domain=api.yourdomain.com</span><br></pre></td></tr></table></figure>
+
+<h3 id="日志与监控"><a href="#日志与监控" class="headerlink" title="日志与监控"></a>日志与监控</h3><p>ngrok 提供 Traffic Inspector，可实时查看每个请求的详细信息，包括 headers、body、延迟等。</p>
+<h2 id="常见使用场景"><a href="#常见使用场景" class="headerlink" title="常见使用场景"></a>常见使用场景</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>暴露本地 Web 服务</td>
+<td><code>ngrok http 3000</code></td>
+</tr>
+<tr>
+<td>测试 Webhook（GitHub/Slack 等）</td>
+<td><code>ngrok http 3000</code></td>
+</tr>
+<tr>
+<td>远程访问本地数据库</td>
+<td><code>ngrok tcp 5432</code></td>
+</tr>
+<tr>
+<td>移动端调试</td>
+<td><code>ngrok http 8080</code></td>
+</tr>
+<tr>
+<td>给外部同事演示本地项目</td>
+<td><code>ngrok http 3000 --basic-auth &quot;demo:demo123&quot;</code></td>
+</tr>
+</tbody></table>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>免费版每次重启会变更地址，付费版可固定域名</li>
+<li>免费版有连接数和带宽限制</li>
+<li>不要把线上服务直接暴露在公网，建议配合认证使用</li>
+</ul>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>ngrok 是我日常开发中使用频率最高的工具之一，特别是在前后端联调、Webhook 测试、远程演示等场景下，一行命令解决问题。相比自己搭 VPN 或配置反向代理，ngrok 的体验非常顺滑。</p>
+<p>官网：<a target="_blank" rel="noopener" href="https://ngrok.com/">https://ngrok.com</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">牛蛙JUN</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://qi-zou.github.io/2026/04/12/ngrok%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/">http://qi-zou.github.io/2026/04/12/ngrok%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://Qi-Zou.github.io" target="_blank">牛蛙JUN</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ngrok/">ngrok</a><a class="post-meta__tags" href="/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/">内网穿透</a><a class="post-meta__tags" href="/tags/%E5%B7%A5%E5%85%B7/">工具</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2026/04/10/2026-04-10-%E9%98%BF%E9%87%8C%E4%BA%91ECS-Docker%E9%83%A8%E7%BD%B2Redis-Nginx%E5%AE%8C%E6%95%B4%E6%96%87%E6%A1%A3/"><img class="next-cover" src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">阿里云ECS（国内）Docker部署Redis+Nginx完整文档</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/01/10/cqBXSH6kytINKGU.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">牛蛙JUN</div><div class="author-info__description">拥抱变化</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">51</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">59</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Qi-Zou"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">欢迎大家一起讨论</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ngrok-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">2.</span> <span class="toc-text">ngrok 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B"><span class="toc-number">3.</span> <span class="toc-text">快速开始</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">3.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E9%9A%A7%E9%81%93"><span class="toc-number">3.2.</span> <span class="toc-text">启动隧道</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%81"><span class="toc-number">3.3.</span> <span class="toc-text">基本认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TCP-%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91"><span class="toc-number">3.4.</span> <span class="toc-text">TCP 端口转发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-Authtoken"><span class="toc-number">3.5.</span> <span class="toc-text">配置 Authtoken</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E5%8A%9F%E8%83%BD"><span class="toc-number">4.</span> <span class="toc-text">进阶功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Traffic-Policy"><span class="toc-number">4.1.</span> <span class="toc-text">Traffic Policy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%91%E5%AE%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D"><span class="toc-number">4.2.</span> <span class="toc-text">绑定自定义域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E4%B8%8E%E7%9B%91%E6%8E%A7"><span class="toc-number">4.3.</span> <span class="toc-text">日志与监控</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">5.</span> <span class="toc-text">常见使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">6.</span> <span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">7.</span> <span class="toc-text">结语</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/04/12/ngrok%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" title="ngrok 快速入门：将本地服务安全暴露到公网"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ngrok 快速入门：将本地服务安全暴露到公网"/></a><div class="content"><a class="title" href="/2026/04/12/ngrok%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" title="ngrok 快速入门：将本地服务安全暴露到公网">ngrok 快速入门：将本地服务安全暴露到公网</a><time datetime="2026-04-12T12:12:00.000Z" title="发表于 2026-04-12 20:12:00">2026-04-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/04/10/2026-04-10-%E9%98%BF%E9%87%8C%E4%BA%91ECS-Docker%E9%83%A8%E7%BD%B2Redis-Nginx%E5%AE%8C%E6%95%B4%E6%96%87%E6%A1%A3/" title="阿里云ECS（国内）Docker部署Redis+Nginx完整文档"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="阿里云ECS（国内）Docker部署Redis+Nginx完整文档"/></a><div class="content"><a class="title" href="/2026/04/10/2026-04-10-%E9%98%BF%E9%87%8C%E4%BA%91ECS-Docker%E9%83%A8%E7%BD%B2Redis-Nginx%E5%AE%8C%E6%95%B4%E6%96%87%E6%A1%A3/" title="阿里云ECS（国内）Docker部署Redis+Nginx完整文档">阿里云ECS（国内）Docker部署Redis+Nginx完整文档</a><time datetime="2026-04-10T03:27:00.000Z" title="发表于 2026-04-10 11:27:00">2026-04-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/04/09/AI%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B-%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B/" title="AI 交互范式的演进：从提示词工程到驾驭工程"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 交互范式的演进：从提示词工程到驾驭工程"/></a><div class="content"><a class="title" href="/2026/04/09/AI%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B-%E4%B8%8A%E4%B8%8B%E6%96%87%E5%B7%A5%E7%A8%8B-%E9%A9%BE%E9%A9%AD%E5%B7%A5%E7%A8%8B/" title="AI 交互范式的演进：从提示词工程到驾驭工程">AI 交互范式的演进：从提示词工程到驾驭工程</a><time datetime="2026-04-09T05:02:00.000Z" title="发表于 2026-04-09 13:02:00">2026-04-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/21/2026-03-21-OpenClaw%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" title="OpenClaw 安装教程 - 你的私人 AI 助手"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OpenClaw 安装教程 - 你的私人 AI 助手"/></a><div class="content"><a class="title" href="/2026/03/21/2026-03-21-OpenClaw%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" title="OpenClaw 安装教程 - 你的私人 AI 助手">OpenClaw 安装教程 - 你的私人 AI 助手</a><time datetime="2026-03-21T08:00:00.000Z" title="发表于 2026-03-21 16:00:00">2026-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/21/hello-world/" title="博客操作说明文档"><img src="https://s2.loli.net/2022/01/10/DVPk1hyIexsEJzg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="博客操作说明文档"/></a><div class="content"><a class="title" href="/2026/03/21/hello-world/" title="博客操作说明文档">博客操作说明文档</a><time datetime="2026-03-21T07:44:04.449Z" title="发表于 2026-03-21 15:44:04">2026-03-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
